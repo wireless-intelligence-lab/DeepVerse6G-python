@@ -23,13 +23,18 @@ def generate_data(params):
 
     np.random.seed(1001)
 
+    num_bs = len(params[c.PARAMSET_ACTIVE_BS])
+
     dataset = {
-        'scene': [],
+        'scene': [dict(ue=None, bs=[dict() for _ in num_bs]) for _ in range(len(c.PARAMSET_DYNAMIC))],
         'info': dict()
     }
 
     scenario_folder = os.path.join(
         params[c.PARAMSET_DATASET_FOLDER], params[c.PARAMSET_SCENARIO])
+    dataset['info']['scenario_folder'] = scenario_folder
+    
+    
     data_map_path = os.path.join(scenario_folder, 'data_map.mat')
     full_data = scio.loadmat(data_map_path)['full_data']
 
@@ -40,39 +45,49 @@ def generate_data(params):
         position_data = scio.loadmat(position_data_path, squeeze_me=True)
         dataset['info']['mobility'] = {'object_types': structured_arr_to_dict(
             position_data['object_info'])}
-        pass
-
-    for s in params[c.PARAMSET_DYNAMIC]:
-        # Camera
-        if params[c.PARAMSET_CAMERA][c.PARAMSET_ACTIVE]:
+        
+        scene_count = 0
+        for scene in params[c.PARAMSET_DYNAMIC]:
+            ue_data = structured_arr_to_dict(structured_arr_to_dict(
+                position_data['scene'][scene])['objects'])
+            
+            dataset['scene'][scene_count]['ue'] = ue_data
+            scene_count += 1
+    
+    # Camera
+    if params[c.PARAMSET_CAMERA][c.PARAMSET_ACTIVE]:
+        for scene in params[c.PARAMSET_DYNAMIC]:
+            # Camera
+            dataset['scene'][scene_count]['bs'][]
             for i in params[c.PARAMSET_CAMERA][c.PARAMSET_IDX]:
                 pass
+                # np.array(structured_arr_to_dict(full_data['bs1'][0])[0][0][0]['image'][0][0]['cam1'][0][0]['data'][0]).flatten()[4]
+    
+    # Lidar
+    if params[c.PARAMSET_LIDAR][c.PARAMSET_ACTIVE]:
+        pass
 
-        # Lidar
-        if params[c.PARAMSET_LIDAR][c.PARAMSET_ACTIVE]:
-            pass
+    # Radar
+    if params[c.PARAMSET_RADAR][c.PARAMSET_ACTIVE]:
+        pass
 
-        # Radar
-        if params[c.PARAMSET_RADAR][c.PARAMSET_ACTIVE]:
-            pass
+        params[c.PARAMSET_SCENARIO_FIL] = os.path.join(
+            os.path.abspath(params[c.PARAMSET_DATASET_FOLDER]),
+            params[c.PARAMSET_SCENARIO],
+            'scene_' + str(scene),  # 'scene_i' folder
+            params[c.PARAMSET_SCENARIO]
+        )
+        comm_dataset.append(generate_comm_data(params))
+    # Comm
+    if params[c.PARAMSET_COMM][c.PARAMSET_ACTIVE]:
 
-            params[c.PARAMSET_SCENARIO_FIL] = os.path.join(
-                os.path.abspath(params[c.PARAMSET_DATASET_FOLDER]),
-                params[c.PARAMSET_SCENARIO],
-                'scene_' + str(scene),  # 'scene_i' folder
-                params[c.PARAMSET_SCENARIO]
-            )
-            comm_dataset.append(generate_comm_data(params))
-        # Comm
-        if params[c.PARAMSET_COMM][c.PARAMSET_ACTIVE]:
-
-            params[c.PARAMSET_SCENARIO_FIL] = os.path.join(
-                os.path.abspath(params[c.PARAMSET_DATASET_FOLDER]),
-                params[c.PARAMSET_SCENARIO],
-                'scene_' + str(scene),  # 'scene_i' folder
-                params[c.PARAMSET_SCENARIO]
-            )
-            radar_dataset.append(generate_radar_data(params))
+        params[c.PARAMSET_SCENARIO_FIL] = os.path.join(
+            os.path.abspath(params[c.PARAMSET_DATASET_FOLDER]),
+            params[c.PARAMSET_SCENARIO],
+            'scene_' + str(scene),  # 'scene_i' folder
+            params[c.PARAMSET_SCENARIO]
+        )
+        radar_dataset.append(generate_radar_data(params))
 
 
 def generate_comm_data(params):
