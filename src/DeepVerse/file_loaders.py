@@ -11,8 +11,16 @@ Date: 7/2/2022
 
 import scipy.io
 import DeepMIMO.consts as c
+import os
 
-def load_scenario_params(scenario_files):
+def load_scenario_params_v2(scenario_files):
+    params = scipy.io.loadmat(os.path.join(scenario_files, 'scenario_params.mat'))
+    scenario_params = dict()
+    scenario_params['CarrierFrequency'] = params['CarrierFrequency'][0][0]
+    scenario_params['TxPower'] = params['TxPower'][0][0]
+    return scenario_params
+
+def load_scenario_params_v1(scenario_files):
     file_loc = scenario_files + c.LOAD_FILE_SP_EXT # Scenario parameters file
     data = scipy.io.loadmat(file_loc)
     scenario_params = {c.PARAMSET_SCENARIO_PARAMS_CF: data[c.LOAD_FILE_SP_CF].astype(float).item(),
@@ -27,6 +35,11 @@ def load_bs_loc(scenario_files, bs_id):
     data = scipy.io.loadmat(TX_loc_file)
     return data[list(data.keys())[3]].astype(float)[bs_id-1, 1:4]
 
+def load_ray_data_v2(basestation_file):
+    data = scipy.io.loadmat(basestation_file)
+    # TODO: Organization code
+    return data
+    
 # Loads the user and basestation dataset files
 def load_ray_data(scenario_files, bs_id, user=True):
     # File Types and Directories

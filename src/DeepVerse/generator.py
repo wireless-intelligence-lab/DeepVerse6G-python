@@ -8,10 +8,10 @@ Authors: Umut Demirhan, Ahmed Alkhateeb
 Date: 12/10/2021
 """
 
-from DeepVerse.raytracing import read_raytracing
+from DeepVerse.raytracing import read_raytracing_v2
 from DeepVerse.communication import generate_MIMO_channel
 from DeepVerse.radar import generate_radar_signal
-from DeepVerse.file_loaders import load_scenario_params
+from DeepVerse.file_loaders import load_scenario_params_v2
 import DeepVerse.consts as c
 import scipy.io as scio
 import numpy as np
@@ -26,7 +26,7 @@ def generate_data(params):
     num_bs = len(params[c.PARAMSET_ACTIVE_BS])
 
     dataset = {
-        'scene': [dict(ue=None, bs=[dict() for _ in num_bs]) for _ in range(len(c.PARAMSET_DYNAMIC))],
+        'scene': [dict(ue=None, bs=[dict() for _ in range(num_bs)]) for _ in range(len(c.PARAMSET_DYNAMIC))],
         'info': dict()
     }
 
@@ -56,30 +56,46 @@ def generate_data(params):
     
     # Camera
     if params[c.PARAMSET_CAMERA][c.PARAMSET_ACTIVE]:
+        scene_count = 0
         for scene in params[c.PARAMSET_DYNAMIC]:
             # Camera
-            dataset['scene'][scene_count]['bs'][]
-            for i in params[c.PARAMSET_CAMERA][c.PARAMSET_IDX]:
-                pass
-                # np.array(structured_arr_to_dict(full_data['bs1'][0])[0][0][0]['image'][0][0]['cam1'][0][0]['data'][0]).flatten()[4]
+            bs_count = 0
+            for bs_idx in params[c.PARAMSET_ACTIVE_BS]:
+                dataset['scene'][scene_count]['bs'][bs_count]['cam'] = []
+                for cam_idx in params[c.PARAMSET_CAMERA][c.PARAMSET_IDX]:
+                    dataset['scene'][scene_count]['bs'][bs_count]['cam'].append(np.array(structured_arr_to_dict(full_data['bs%i'%(bs_idx+1)][0])[0][0][0]['image'][0][0]['cam%i'%(cam_idx)][0][0]['data'][0]).flatten()[scene_count])
+                bs_count += 1
+            scene_count += 1
+                
     
     # Lidar
     if params[c.PARAMSET_LIDAR][c.PARAMSET_ACTIVE]:
-        pass
-
-    # Radar
-    if params[c.PARAMSET_RADAR][c.PARAMSET_ACTIVE]:
-        pass
+        scene_count = 0
+        for scene in params[c.PARAMSET_DYNAMIC]:
+            bs_count = 0
+            for bs_idx in params[c.PARAMSET_ACTIVE_BS]:
+                dataset['scene'][scene_count]['bs'][bs_count]['lidar'] = [full_data['bs%i'%(bs_idx+1)][0][0][0][0]['lidar'][0][0][0][0][scene]]
+                bs_count += 1
+            scene_count += 1
+            
+    # Comm
+    comm_dataset = []
+    if params[c.PARAMSET_COMM][c.PARAMSET_ACTIVE]:
 
         params[c.PARAMSET_SCENARIO_FIL] = os.path.join(
             os.path.abspath(params[c.PARAMSET_DATASET_FOLDER]),
             params[c.PARAMSET_SCENARIO],
-            'scene_' + str(scene),  # 'scene_i' folder
-            params[c.PARAMSET_SCENARIO]
+            'wireless'
         )
-        comm_dataset.append(generate_comm_data(params))
-    # Comm
-    if params[c.PARAMSET_COMM][c.PARAMSET_ACTIVE]:
+        params[c.PARAMSET_COMM]['scenario'] = load_scenario_params_v2(params[c.PARAMSET_SCENARIO_FIL])
+        
+        for scene in params[c.PARAMSET_DYNAMIC]:
+            params[c.PARAMSET_SCENARIO_FIL] = os.path.join(params[c.PARAMSET_SCENARIO_FIL], 'scene_%i_'%scene)
+            comm_dataset.append(generate_comm_data(params))
+
+    # Radar
+    if params[c.PARAMSET_RADAR][c.PARAMSET_ACTIVE]:
+        pass
 
         params[c.PARAMSET_SCENARIO_FIL] = os.path.join(
             os.path.abspath(params[c.PARAMSET_DATASET_FOLDER]),
@@ -101,8 +117,7 @@ def generate_comm_data(params):
         safe_print('\nBasestation %i' % bs_indx)
 
         safe_print('\nUE-BS Channels')
-        dataset[i][c.DICT_UE_IDX], dataset[i][c.OUT_LOC] = read_raytracing(
-            bs_indx, params, user=True)
+        dataset[i][c.DICT_UE_IDX], dataset[i][c.OUT_LOC] = read_raytracing_v2(bs_indx, params, user=True)
         dataset[i][c.DICT_UE_IDX][c.OUT_CHANNEL] = generate_MIMO_channel(dataset[i][c.DICT_UE_IDX][c.OUT_PATH],
                                                                          params,
                                                                          params[c.PARAMSET_ANT_BS][i],
@@ -111,8 +126,7 @@ def generate_comm_data(params):
         if params[c.PARAMSET_BS2BS]:
             safe_print('\nBS-BS Channels')
 
-            dataset[i][c.DICT_BS_IDX], _ = read_raytracing(
-                bs_indx, params, user=False)
+            dataset[i][c.DICT_BS_IDX], _ = read_raytracing_v2(bs_indx, params, user=False)
             dataset[i][c.DICT_BS_IDX][c.OUT_CHANNEL] = generate_MIMO_channel_rx_ind(dataset[i][c.DICT_BS_IDX][c.OUT_PATH],
                                                                                     params,
                                                                                     params[c.PARAMSET_ANT_BS][i],

@@ -17,7 +17,7 @@ import DeepVerse
 #%% Load and print the default parameters
 
 parameters = DeepVerse.default_params()
-parameters['dataset_folder'] = r'C:\Users\demir\OneDrive\Documents\GitHub\DeepVerse\scenarios'
+parameters['dataset_folder'] = r'C:\Users\Umt\Documents\GitHub\WirelessVerse\scenarios'
 parameters['scenario'] = 'Scenario 1'
 
 DeepVerse.generate_data(parameters)
