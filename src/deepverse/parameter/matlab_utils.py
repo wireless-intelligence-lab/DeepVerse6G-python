@@ -2,7 +2,6 @@ import re
 import numpy as np
 
 # TODO: Matrix input is not supported - may be required for modes such as random selection or different arrays
-# May be better to change the parameter format.
 
 ####################################### LOADING Functions ##########################################
 def matlab_load(file):

@@ -1,11 +1,15 @@
 # main.py
 #%%
 import os
+import sys
+
 import numpy as np
 
-from deepverse.parameter import ParameterManager
+sys.path.insert(0, './src')
+
+from deepverse import ParameterManager
 from deepverse.scenario import ScenarioManager
-from deepverse.datasets import Dataset
+from deepverse import Dataset 
 
 from deepverse.visualizers import ImageVisualizer, LidarVisualizer
 #%%
@@ -57,6 +61,7 @@ def main():
     #%% Visualization Tests
     # Initialize Dataset with the new MATLAB config file (assuming Dataset class is defined)
     dataset = Dataset(config_path)
+    dataset.scenario.visualizer.set_backend('pyvista')
     dataset.scenario.visualize()
     # # For demonstration, let's just show how you would generate and process batches
     # for batch in dataset.generate_batches():

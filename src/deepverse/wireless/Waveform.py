@@ -56,6 +56,8 @@ class FMCW(Waveform):
         
         # Total chirp duration including waiting time, defaults to active chirp duration if not provided
         self.T_period = T_period if T_period is not None else self.T_chirp
+        self.T_pause = self.T_period - self.T_chirp
+        
         self.T_frame = n_chirps * self.T_period
         
         self.time = np.arange(0, self.T_frame, 1./Fs)
@@ -74,7 +76,7 @@ class FMCW(Waveform):
     def generate_samples(self, paths):
         """
         Generate FMCW baseband waveform samples.
-
+        
         Returns:
         -------
         numpy.ndarray
@@ -94,11 +96,48 @@ class FMCW(Waveform):
         velocity_term     = doppler_vel * t    / c.LIGHTSPEED 
         acceleration_term = doppler_acc * t**2 / c.LIGHTSPEED / 2. # This should be very small (may be removed)
         tau = tau + velocity_term + acceleration_term
+        tau[tau > self.T_pause] -= self.T_period
         
         f_IF = self.chirp_slope * tau
-        phi_IF = (self.f_0 + 0.5 * self.chirp_slope * tau) * tau # Second term may be removed
+        phi_IF = (self.f_0 - 0.5 * self.chirp_slope * tau) * tau # Second term may be removed
  
         # IF signal: P x T (chirp time samples)
-        IF_signal = a * np.exp(1j * 2 * np.pi * (f_IF * t + phi_IF))
+        # Conjugate to make it cir e^(-j phase)
+        IF_signal = np.conj(a) * np.exp(1j * 2 * np.pi * (f_IF * t + phi_IF))
+        
+        return IF_signal
+    
+    def generate_samples_for_delay(self, delay_in_samples = [1]):
+        """
+        Generate FMCW baseband waveform samples.
+        
+        Returns:
+        -------
+        numpy.ndarray
+            FMCW waveform samples.
+        """     
+        
+        tau = np.array(delay_in_samples) / self.Fs
+        
+        t = self.time.reshape((1, -1)) # Sampling times
+        
+        tau = tau.reshape((-1, 1))
+        # doppler_vel = paths.doppler_vel.reshape((-1, 1))
+        # doppler_acc = paths.doppler_acc.reshape((-1, 1))
+        
+        # velocity_term     = doppler_vel * t    / c.LIGHTSPEED 
+        # acceleration_term = doppler_acc * t**2 / c.LIGHTSPEED / 2. # This should be very small (may be removed)
+        
+        velocity_term = 0
+        acceleration_term = 0
+        tau = tau + velocity_term + acceleration_term
+        # tau[tau > self.T_pause] -= self.T_period
+        
+        f_IF = self.chirp_slope * tau
+        phi_IF = (self.f_0 - 0.5 * self.chirp_slope * tau) * tau # Second term may be removed
+ 
+        # IF signal: P x T (chirp time samples)
+        # Conjugate to make it cir e^(-j phase)
+        IF_signal = np.exp(1j * 2 * np.pi * (f_IF * t + phi_IF))
         
         return IF_signal

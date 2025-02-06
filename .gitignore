@@ -1,2 +1,4 @@
 *.pyc
 scenarios/*
+docs/build/*
+examples/*

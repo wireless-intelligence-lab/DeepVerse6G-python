@@ -1,0 +1,84 @@
+basestations:
+- 1
+camera: true
+camera_id:
+- 1
+- 2
+- 3
+- 4
+- 5
+comm:
+  OFDM:
+    bandwidth: 0.2
+    selected_subcarriers:
+    - 0
+    - 1
+    subcarriers: 512
+  activate_RX_filter: 0
+  bs_antenna:
+    FoV:
+    - 360
+    - 180
+    rotation:
+    - 5
+    - 10
+    - 20
+    shape:
+    - 32
+    - 1
+    spacing: 0.5
+  enable: true
+  enable_Doppler: 1
+  generate_OFDM_channels: 1
+  num_paths: 25
+  ue_antenna:
+    FoV:
+    - 360
+    - 180
+    rotation:
+    - 0
+    - 30
+    - 0
+    shape:
+    - 1
+    - 1
+    spacing: 0.5
+dataset_folder: D:\\DeepVerse\\scenarios
+lidar: true
+position: true
+radar:
+  FMCW:
+    Fs: 4000000.0
+    chirp_slope: 15000000000000.0
+    n_chirps: 256
+    n_samples_per_chirp: 512
+  enable: false
+  num_paths: 1000
+  rx_antenna:
+    FoV:
+    - 360
+    - 180
+    rotation:
+    - 0
+    - 0
+    - -90
+    shape:
+    - 32
+    - 1
+    spacing: 0.5
+  tx_antenna:
+    FoV:
+    - 360
+    - 180
+    rotation:
+    - 0
+    - 0
+    - -90
+    shape:
+    - 1
+    - 1
+    spacing: 0.5
+scenario: Town01-Carla
+scenes:
+- 100
+- 101
