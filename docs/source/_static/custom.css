@@ -21,6 +21,8 @@
     
     font-family: var(--pst-font-family-base);
     line-height: 1.4;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-sidebar-background-border) transparent;
 }
 
 /* Light theme with matching specificity */
@@ -242,7 +244,7 @@ html[data-theme="dark"] {
 body {
     font-family: var(--pst-font-family-base);
     overflow-x: hidden;
-    width: 100vw;
+    width: 100%;
 }
 
 h1,
@@ -269,18 +271,76 @@ kbd {
     text-wrap: nowrap;
 }
 
-/* Add separators only after search and navbar-nav */
+/* Remove sidebar-specific styles that were for pydata theme */
 .sidebar-primary-item:not(:last-child):not(:first-child) {
-    position: relative;
-    margin-bottom: 1rem;
+    position: static;
+    margin-bottom: 0;
 }
 
 .sidebar-primary-item:not(:last-child):not(:first-child)::after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-color: var(--pst-color-border);
+    display: none;
+}
+
+/* Add some furo-specific customizations */
+.sidebar-brand {
+    font-family: var(--pst-font-family-heading);
+}
+
+.sidebar-search-container {
+    margin: 1rem 0;
+}
+
+/* Add custom spacing and remove footer */
+main {
+    margin-top: 2rem !important;
+}
+
+footer {
+    display: block !important;
+}
+
+/* Reduce right margin */
+.content {
+    width: 60em !important;
+    margin-right: 1rem !important;
+}
+
+/* More specific selectors to override Furo defaults */
+.bd-main .bd-content .bd-article-container {
+    margin-top: 5rem !important;
+}
+
+article {
+    width: 60em !important;
+    padding-right: 1rem !important;
+    margin-top: 5rem !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-sidebar-background-border);
+    border-radius: 4px;
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"] {
+    scrollbar-color: var(--color-sidebar-background-border) transparent;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background-color: var(--color-sidebar-background-border);
+}
+
+/* Only show scrollbar when needed */
+html {
+    overflow-y: auto;
 }

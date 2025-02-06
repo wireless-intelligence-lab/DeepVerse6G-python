@@ -41,39 +41,39 @@ nbsphinx_execute = "never"
 # html_theme = 'maisie_sphinx_theme'
 # html_theme_path = maisie_sphinx_theme.html_theme_path()
 
-html_theme = "pydata_sphinx_theme"
+html_theme = "furo"
 # html_context["default_mode"] = "dark"
 # html_theme_options["navbar_end"] = ["navbar-icon-links"]
 
 html_context = {"default_mode": "light"}  # Set default color mode to light
 
 html_theme_options = {
-    # Remove all navbar items
-    "navbar_start": [],
-    "navbar_center": [],
-    "navbar_end": [],
-    "navbar_persistent": [],
-    # Configure navigation behavior
-    "navigation_depth": 2,
-    "show_nav_level": 1,
-    "navigation_with_keys": True,
-    "collapse_navigation": True,  # Add this to collapse other sections
-    "show_toc_level": 2,
-    # Remove secondary sidebar
-    "secondary_sidebar_items": [],
-    # Configure the sidebar end section
-    "primary_sidebar_end": ["theme-switcher"],
-    # Footer configuration
-    "footer_start": ["copyright"],
-    "footer_end": [],
+    "sidebar_hide_name": False,
+    "light_css_variables": {
+        "color-brand-primary": "#7f6cef",
+        "color-brand-content": "#7f6cef",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#9386f3",
+        "color-brand-content": "#9386f3",
+    },
+    "footer_icons": [],
+    "light_logo": "logo-light.png",  # Add this if you have light/dark logos
+    "dark_logo": "logo-dark.png",    # Add this if you have light/dark logos
+    "default_mode": "light"          # This is the correct way to set default mode in Furo
 }
 
-# Configure left sidebar with different components for different pages
+# Show copyright but hide sphinx
+html_show_sphinx = False
+html_show_copyright = True
+
+# Simplify sidebar configuration for furo
 html_sidebars = {
-    "**": [  # Show minimal sidebar on all other pages
-        "search-field.html",
-        "navbar-nav.html",
-        "sidebar-nav-bs.html",
+    "**": [
+        "sidebar/search.html",
+        "sidebar/scroll-start.html",
+        "sidebar/navigation.html",
+        "sidebar/scroll-end.html",
     ]
 }
 
