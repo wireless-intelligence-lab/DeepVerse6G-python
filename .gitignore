@@ -1,4 +1,5 @@
 *.pyc
 scenarios/*
+docs/build.zip
 docs/build/*
 examples/*
