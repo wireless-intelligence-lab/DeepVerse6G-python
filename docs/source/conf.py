@@ -66,6 +66,7 @@ html_theme_options = {
 # Show copyright but hide sphinx
 html_show_sphinx = False
 html_show_copyright = True
+html_show_sourcelink = False
 
 # Simplify sidebar configuration for furo
 html_sidebars = {
