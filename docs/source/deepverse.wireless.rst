@@ -1,13 +1,10 @@
-deepverse.wireless package
-==========================
+wireless package
+================
 
 .. automodule:: deepverse.wireless
    :members:
    :undoc-members:
    :show-inheritance:
-
-Submodules
-----------
 
 .. toctree::
    :maxdepth: 4

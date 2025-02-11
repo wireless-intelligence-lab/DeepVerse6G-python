@@ -1,13 +1,10 @@
-deepverse.parameter package
-===========================
+parameter package
+=================
 
 .. automodule:: deepverse.parameter
    :members:
    :undoc-members:
    :show-inheritance:
-
-Submodules
-----------
 
 .. toctree::
    :maxdepth: 4
