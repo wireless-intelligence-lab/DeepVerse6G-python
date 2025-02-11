@@ -44,7 +44,7 @@ class Dataset:
 
         # Initialize modality-specific datasets based on the scenario configuration
         # TODO: Add an enumerator class, load by name and also update scenario manager to use the enumerator.
-        if 'camera' in self.scenario.sensors:
+        if 'cam' in self.scenario.sensors:
             self.camera_dataset = CameraDataset(self.params, self.scenario.sensors['camera'])
         if 'LiDAR' in self.scenario.sensors:
             self.lidar_dataset = LiDARDataset(self.params, self.scenario.sensors['LiDAR'])
@@ -56,7 +56,7 @@ class Dataset:
         self.radar_dataset = RadarDataset(self.param_manager.get_filtered_params('radar'))
         self.comm_dataset = CommunicationDataset(self.param_manager.get_filtered_params('comm'))
 
-    def get_sample(self, modality, index, device_index=None, ue_idx=None, bs_idx=None):
+    def get_sample(self, modality, index=None, device_index=None, ue_idx=None, bs_idx=None):
         """
         Retrieves a data sample from a specific modality.
 
@@ -98,7 +98,7 @@ class Dataset:
                 raise ValueError("ue_idx must be specified for comm modality")
             return self.comm_dataset.get_ue_location(ue_idx, bs_idx=0, time_idx=index) # Assuming bs_idx=0 is fixed for location
         elif modality == 'mobility':
-            return self.mobility_dataset.get_sample(ue_idx, sample_index=index)
+            return self.mobility_dataset.get_sample(object_id=ue_idx, sample_index=index)
         else:
             raise ValueError("Invalid modality")
 
@@ -116,7 +116,7 @@ class Dataset:
         """
         if modality == 'lidar':
             self.lidar_dataset.visualize(device_index, sample_index)
-        elif modality == 'camera':
+        elif modality == 'cam':
             self.camera_dataset.visualize(device_index, sample_index)
         else:
             raise ValueError("Visualization not implemented for this modality")
@@ -134,7 +134,21 @@ class Dataset:
         """
         if modality == 'lidar':
             self.lidar_dataset.set_visualization_backend(backend)
-        elif modality == 'camera':
+        elif modality == 'cam':
             self.camera_dataset.set_visualization_backend(backend)
         else:
             raise ValueError("Setting visualization backend is not supported for this modality")
+
+    def get_modality(self, modality):
+        if modality == 'cam':
+            return self.camera_dataset
+        elif modality == 'lidar':
+            return self.lidar_dataset
+        elif modality == 'mobility':
+            return self.mobility_dataset
+        elif modality == 'radar':
+            return self.radar_dataset
+        elif modality == 'comm':
+            return self.comm_dataset
+        else:
+            raise KeyError(f'The modality {modality} is not available.')

@@ -151,7 +151,7 @@ class CommunicationDataset:
             safe_print('\nUE-BS Channels')
             # TODO: When adding the feature for static users, fix None for rx_idx
             # rx_idx=None to generate all users
-            raydata, bs_data['loc'] = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=None, user=True)
+            raydata, bs_data['ue_loc'] = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=None, user=True)
 
             ue_channels = []
             n_ue = len(raydata['paths'])
@@ -175,7 +175,7 @@ class CommunicationDataset:
             
             #%%
             safe_print('\nBS-BS Channels')
-            raydata, _ = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=bs_indx-1, user=False)
+            raydata, bs_data['bs_loc'] = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=bs_indx-1, user=False)
             bs_channels = []
             n_bs = len(raydata['paths'])
             for j in tqdm(range(n_bs), desc='Generating channels'):
@@ -205,5 +205,7 @@ class CommunicationDataset:
         return self.data[time_idx][tx_idx]['bs'][rx_idx]
     
     def get_ue_location(self, ue_idx, bs_idx, time_idx):
-        return self.data[time_idx][bs_idx]['ue']['loc'][ue_idx]
+        return self.data[time_idx][bs_idx]['ue_loc'][ue_idx]
     
+    def get_bs_location(self, ue_idx, bs_idx, time_idx):
+        return self.data[time_idx][bs_idx]['bs_loc'][ue_idx]

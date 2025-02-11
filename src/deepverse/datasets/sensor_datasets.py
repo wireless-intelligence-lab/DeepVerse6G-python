@@ -1,6 +1,6 @@
 # base_dataset.py
 import shutil
-
+import numpy as np
 class BaseDataset:
     """
     Abstract base class for datasets.
@@ -97,6 +97,9 @@ class PathProviderDataset(BaseDataset):
         self.num_devices = len(self.sensors)
         self.visualizer = visualizer
 
+    def list_sensors(self):
+        return self.sensors
+
     def get_sample(self, device_index, sample_index):
         """
         Retrieves a data sample (file path) for a specific device and sample index.
@@ -111,10 +114,26 @@ class PathProviderDataset(BaseDataset):
         Raises:
             ValueError: If the device index is invalid.
         """
-        if device_index < 0 or device_index >= self.num_devices:
-            raise ValueError(f"Invalid {self.device_type} index")
-        # Return specific device sample
-        return self.sensors[self.sensor_id[device_index]].files[sample_index]  # Assumes each sensor object has a 'files' attribute.
+        if isinstance(sample_index, int):
+            pass
+        elif isinstance(sample_index, list):
+            sample_index = np.array(sample_index)
+        elif isinstance(sample_index, np.ndarray):
+            pass
+        else:
+            raise TypeError('The sample_index parameter needs to be integer or list or numpy array')
+        dataset_sample_index = np.array(self.params['scenes'])[sample_index]
+        
+        if isinstance(device_index, str):
+            if device_index not in self.sensor_id:
+                raise ValueError(f"Invalid sensor index: {self.device_type}")
+            # Return specific device sample
+            return self.sensors[device_index].files[dataset_sample_index]  # Assumes each sensor object has a 'files' attribute.
+        elif isinstance(device_index, int):
+            if device_index < 0 or device_index >= self.num_devices:
+                raise ValueError(f"Invalid sensor index: {self.device_type}")
+            # Return specific device sample
+            return self.sensors[self.sensor_id[device_index]].files[dataset_sample_index]  # Assumes each sensor object has a 'files' attribute.
 
     def save_sample(self, path, device_index, sample_index):
         """
@@ -232,11 +251,11 @@ class MobilityDataset:
             - If object_id is None and sample_index is specified: Returns a list of tuples (time, object properties) for all objects at the specified time index.
             - If both object_id and sample_index are None: Returns the entire self.objects dictionary.
         """
-        if object_id and sample_index is None:
+        if (object_id is not None) and sample_index is None:
             return self.objects[object_id]
-        if object_id and (sample_index is not None):
+        if (object_id is not None) and (sample_index is not None):
             return self.objects[object_id].get_properties_at_time(sample_index) # Assumes moving objects have a method 'get_properties_at_time'
-        if object_id is None and sample_index is not None:
+        if object_id is None and (sample_index is not None):
             result = []
             for obj_id, samples in self.objects.items():
                 result.extend([(t, obj) for t, obj in samples if t == sample_index])
