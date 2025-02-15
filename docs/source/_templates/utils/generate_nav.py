@@ -60,31 +60,49 @@ def extract_headers_from_rst(file_path):
 def generate_nav_template():
     """Generate navigation template with proper Sphinx links."""
     docs_path = Path(__file__).parent.parent.parent
-    current_file_path = Path(__file__).resolve().parent  # Get the current file's directory
+    current_file_path = Path(__file__).resolve().parent
 
-    # Extract headers from getting_started.ipynb
-    headers = extract_headers_from_notebook(docs_path / "examples/getting_started.ipynb")
+    # Create a structured navigation dictionary
+    nav_structure = [
+        {
+            "title": "Documentation",
+            "level": 1,
+            "items": [
+                {
+                    "source": "examples/getting_started.ipynb",
+                    "headers": []
+                },
+                {
+                    "source": "examples/adjusting_parameters.ipynb",
+                    "headers": []
+                },
+                {
+                    "source": "examples/camera.ipynb",
+                    "headers": []
+                },
+                {
+                    "source": "examples/lidar.ipynb",
+                    "headers": []
+                },
+                {
+                    "source": "examples/mobility.ipynb",
+                    "headers": []
+                },
+                {
+                    "source": "examples/communication.ipynb",
+                    "headers": []
+                },
+                {
+                    "source": "examples/radar.ipynb",
+                    "headers": []
+                },
+            ]
+        }
+    ]
 
-    # Add headers from adjusting_parameters.ipynb
-    headers.extend(
-        extract_headers_from_notebook(docs_path / "examples/adjusting_parameters.ipynb")
-    )
-
-    # Function to create a relative link
-    def create_relative_link(target_file):
-        target_path = Path(target_file)
-        try:
-            relative_link = str(target_path.relative_to(current_file_path.parent)).replace("\\", "/")
-        except ValueError:
-            relative_link = str(target_path).replace("\\", "/")
-        return relative_link
-
-    # Update headers with correct links
-    updated_headers = []
-    for level, title, link in headers:
-        # Create a relative link for each header
-        relative_link = create_relative_link(link)
-        updated_headers.append((level, title, relative_link))
+    # Populate headers for each section
+    for section in nav_structure[0]["items"]:
+        section["headers"] = extract_headers_from_notebook(docs_path / section["source"])
 
     template = """
     <div class="sidebar-tree">
@@ -92,21 +110,12 @@ def generate_nav_template():
         <span class="caption-text">DeepVerse6G</span>
       </p>
       <ul>
-        {% for level, title, link in headers %}
-        <li class="toctree-l{{ level }}">
-          <a class="reference internal" href="{{ link }}">{{ title }}</a>
-          {% if loop.index < headers|length and headers[loop.index][0] > level %}
-            <ul>
-          {% endif %}
-          {% if loop.index > 0 and headers[loop.index - 1][0] < level %}
-            <li class="toctree-l{{ level }}">
+        {% for item in items %}
+          {% for level, title, link in item.headers %}
+            <li class="toctree-l{{ level }}" style="margin-left: {{ (level - 1) * 12 }}px;">
               <a class="reference internal" href="{{ link }}">{{ title }}</a>
             </li>
-          {% endif %}
-          {% if loop.index < headers|length and headers[loop.index][0] < level %}
-            </ul>
-          {% endif %}
-        </li>
+          {% endfor %}
         {% endfor %}
       </ul>
       
@@ -149,7 +158,7 @@ def generate_nav_template():
     from jinja2 import Template
 
     template = Template(template)
-    nav_content = template.render(headers=updated_headers)
+    nav_content = template.render(items=nav_structure[0]["items"])
     nav_path.write_text(nav_content)
 
 
