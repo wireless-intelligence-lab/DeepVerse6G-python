@@ -1,0 +1,215 @@
+
+    <div class="sidebar-tree">
+      <p class="caption" role="heading">
+        <span class="caption-text">DeepVerse6G</span>
+      </p>
+      <ul>
+        
+        <li class="toctree-l1">
+          <a class="reference internal" href="examples/getting_started.html#Starting-with-DeepVerse6G">Starting with DeepVerse6G</a>
+          
+            <ul>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l3">
+          <a class="reference internal" href="examples/getting_started.html#Understanding-the-Dataset">Understanding the Dataset</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l3">
+          <a class="reference internal" href="examples/getting_started.html#Scenarios">Scenarios</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l3">
+          <a class="reference internal" href="examples/getting_started.html#Generating-a-Dataset">Generating a Dataset</a>
+          
+            <ul>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Setting-the-Parameters">Setting the Parameters</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Data-Generation-Process">Data Generation Process</a>
+          
+          
+          
+            </ul>
+          
+        </li>
+        
+        <li class="toctree-l3">
+          <a class="reference internal" href="examples/getting_started.html#Accessing-Data-Modalities">Accessing Data Modalities</a>
+          
+            <ul>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Camera">Camera</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Lidar">Lidar</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Radar">Radar</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Wireless">Wireless</a>
+          
+            <ul>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l5">
+          <a class="reference internal" href="examples/getting_started.html#Channels-from-Basestations-to-Users">Channels from Basestations to Users</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l5">
+          <a class="reference internal" href="examples/getting_started.html#Channels-from-Basestations-to-Basestations">Channels from Basestations to Basestations</a>
+          
+          
+          
+            </ul>
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Location">Location</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l4">
+          <a class="reference internal" href="examples/getting_started.html#Mobility-Moving-Objects---Vehicles-Humans-etc">Mobility (Moving Objects - Vehicles, Humans etc.)</a>
+          
+          
+          
+            </ul>
+          
+        </li>
+        
+        <li class="toctree-l1">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Dataset-Parameters">Dataset Parameters</a>
+          
+            <ul>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l2">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Parameter-File">Parameter File</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l2">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Detailed-Parameter-Descriptions">Detailed Parameter Descriptions</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l2">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Loading-the-Modified-Parameters">Loading the Modified Parameters</a>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l2">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Code-Based-Parameter-Adjustments">Code-Based Parameter Adjustments</a>
+          
+            <ul>
+          
+          
+          
+        </li>
+        
+        <li class="toctree-l3">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Save-Adjusted-Parameters">Save Adjusted Parameters</a>
+          
+          
+          
+            </ul>
+          
+        </li>
+        
+        <li class="toctree-l2">
+          <a class="reference internal" href="examples/adjusting_parameters.html#Using-YAML-for-Parameter-Configuration">Using YAML for Parameter Configuration</a>
+          
+          
+          
+        </li>
+        
+      </ul>
+      
+      
+      <div style="padding-bottom: 200px;"></div>
+    </div>
+    <script>
+      document.querySelectorAll('.reference.internal').forEach(function(link) {
+          link.addEventListener('click', function(event) {
+              event.preventDefault();
+              const href = this.getAttribute('href');
+              
+              // Get the current path and extract the base directory
+              const currentPath = window.location.pathname || window.location.href;
+              const htmlIndex = currentPath.indexOf('/html/');
+              
+              if (htmlIndex === -1) {
+                  // Fallback if /html/ not found
+                  window.location.href = href;
+                  return;
+              }
+              
+              // Extract the base path up to /html/
+              const basePath = currentPath.substring(0, htmlIndex + 6); // Include /html/
+              
+              // Clean up the href
+              const cleanHref = href.replace(/\.\.\//g, '').replace(/^\/+/, '');
+              
+              // Construct the final URL
+              const newPath = basePath + cleanHref;
+              window.location.href = newPath;
+          });
+      });
+    </script>
+    

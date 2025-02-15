@@ -1,250 +1,252 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    -ms-word-break: break-word;
-    word-break: break-word;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-word;
+  word-break: break-word;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 :root {
-    /* Font family variables */
-    --pst-font-family-base: 'DM Sans', sans-serif;
-    --pst-font-family-heading: 'Poppins', sans-serif;
-    --pst-font-family-monospace: 'Source Code Pro', monospace;
-    
-    font-family: var(--pst-font-family-base);
-    line-height: 1.4;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-sidebar-background-border) transparent;
+  /* Font family variables */
+  --pst-font-family-base: "DM Sans", sans-serif;
+  --pst-font-family-heading: "Poppins", sans-serif;
+  --pst-font-family-monospace: "Source Code Pro", monospace;
+
+  font-family: var(--pst-font-family-base);
+  line-height: 1.4;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sidebar-background-border) transparent;
 }
 
 /* Light theme with matching specificity */
 html[data-theme="light"] {
-    /* Primary colors and variants */
-    --pst-color-primary: #7f6cef;
-    --pst-color-primary-text: #ffffff;
-    --pst-color-primary-highlight: #6b6bdc;
-    --pst-color-primary-highlight-text: #ffffff;
-    --pst-color-primary-bg: #f5f7ff;
+  /* Primary colors and variants */
+  --pst-color-primary: #7f6cef;
+  --pst-color-primary-text: #ffffff;
+  --pst-color-primary-highlight: #6b6bdc;
+  --pst-color-primary-highlight-text: #ffffff;
+  --pst-color-primary-bg: #f5f7ff;
 
-    /* Secondary colors */
-    --pst-color-secondary: #7f6cef;
-    --pst-color-secondary-text: #ffffff;
-    --pst-color-secondary-highlight: #6b6bdc;
-    --pst-color-secondary-highlight-text: #ffffff;
-    --pst-color-secondary-bg: #f5f7ff;
+  /* Secondary colors */
+  --pst-color-secondary: #7f6cef;
+  --pst-color-secondary-text: #ffffff;
+  --pst-color-secondary-highlight: #6b6bdc;
+  --pst-color-secondary-highlight-text: #ffffff;
+  --pst-color-secondary-bg: #f5f7ff;
 
-    /* Success colors */
-    --pst-color-success: #00843f;
-    --pst-color-success-text: #ffffff;
-    --pst-color-success-highlight: #007036;
-    --pst-color-success-highlight-text: #ffffff;
-    --pst-color-success-bg: #d6ece1;
+  /* Success colors */
+  --pst-color-success: #00843f;
+  --pst-color-success-text: #ffffff;
+  --pst-color-success-highlight: #007036;
+  --pst-color-success-highlight-text: #ffffff;
+  --pst-color-success-bg: #d6ece1;
 
-    /* Info colors */
-    --pst-color-info: #276be9;
-    --pst-color-info-text: #ffffff;
-    --pst-color-info-highlight: #1457d3;
-    --pst-color-info-highlight-text: #ffffff;
-    --pst-color-info-bg: #dce7fc;
+  /* Info colors */
+  --pst-color-info: #276be9;
+  --pst-color-info-text: #ffffff;
+  --pst-color-info-highlight: #1457d3;
+  --pst-color-info-highlight-text: #ffffff;
+  --pst-color-info-bg: #dce7fc;
 
-    /* Warning colors */
-    --pst-color-warning: #f66a0a;
-    --pst-color-warning-text: #14181e;
-    --pst-color-warning-highlight: #d25a07;
-    --pst-color-warning-highlight-text: #14181e;
-    --pst-color-warning-bg: #f8e3d0;
+  /* Warning colors */
+  --pst-color-warning: #f66a0a;
+  --pst-color-warning-text: #14181e;
+  --pst-color-warning-highlight: #d25a07;
+  --pst-color-warning-highlight-text: #14181e;
+  --pst-color-warning-bg: #f8e3d0;
 
-    /* Danger colors */
-    --pst-color-danger: #d72d47;
-    --pst-color-danger-text: #ffffff;
-    --pst-color-danger-highlight: #bb2239;
-    --pst-color-danger-highlight-text: #ffffff;
-    --pst-color-danger-bg: #f9e1e4;
+  /* Danger colors */
+  --pst-color-danger: #d72d47;
+  --pst-color-danger-text: #ffffff;
+  --pst-color-danger-highlight: #bb2239;
+  --pst-color-danger-highlight-text: #ffffff;
+  --pst-color-danger-bg: #f9e1e4;
 
-    /* Accent colors */
-    --pst-color-accent: #c132af;
-    --pst-color-accent-bg: #f8dff5;
+  /* Accent colors */
+  --pst-color-accent: #c132af;
+  --pst-color-accent-bg: #f8dff5;
 
-    /* Base colors */
-    --pst-color-background: #ffffff;
-    --pst-color-on-background: #ffffff;
-    --pst-color-surface: #f3f4f5;
-    --pst-color-on-surface: #222832;
-    --pst-color-text-base: #222832;
-    --pst-color-text-muted: #48566b;
-    --pst-color-heading: var(--pst-color-text-base);
-    --pst-color-border: #d1d5da;
-    --pst-color-border-muted: rgba(23, 23, 26, .2);
-    --pst-color-shadow: rgba(0, 0, 0, .1);
+  /* Base colors */
+  --pst-color-background: #ffffff;
+  --pst-color-on-background: #ffffff;
+  --pst-color-surface: #f3f4f5;
+  --pst-color-on-surface: #222832;
+  --pst-color-text-base: #222832;
+  --pst-color-text-muted: #48566b;
+  --pst-color-heading: var(--pst-color-text-base);
+  --pst-color-border: #d1d5da;
+  --pst-color-border-muted: rgba(23, 23, 26, 0.2);
+  --pst-color-shadow: rgba(0, 0, 0, 0.1);
 
-    /* Link colors */
-    --pst-color-link: var(--pst-color-primary);
-    --pst-color-link-hover: var(--pst-color-secondary);
+  /* Link colors */
+  --pst-color-link: var(--pst-color-primary);
+  --pst-color-link-hover: var(--pst-color-secondary);
 
-    /* Other UI elements */
-    --pst-color-inline-code: #912583;
-    --pst-color-inline-code-links: #085d6c;
-    --pst-color-target: #f3cf95;
-    --pst-color-blockquote-notch: #677384;
+  /* Other UI elements */
+  --pst-color-inline-code: #912583;
+  --pst-color-inline-code-links: #085d6c;
+  --pst-color-target: #f3cf95;
+  --pst-color-blockquote-notch: #677384;
 
-    /* Table colors */
-    --pst-color-table: #14181e;
-    --pst-color-table-row-hover-bg: #d5b4fd;
-    --pst-color-table-inner-border: #e5e7ea;
-    --pst-color-table-outer-border: var(--pst-color-surface);
-    --pst-color-table-heading-bg: var(--pst-color-surface);
-    --pst-color-table-row-zebra-high-bg: var(--pst-color-on-background);
-    --pst-color-table-row-zebra-low-bg: var(--pst-color-surface);
+  /* Table colors */
+  --pst-color-table: #14181e;
+  --pst-color-table-row-hover-bg: #d5b4fd;
+  --pst-color-table-inner-border: #e5e7ea;
+  --pst-color-table-outer-border: var(--pst-color-surface);
+  --pst-color-table-heading-bg: var(--pst-color-surface);
+  --pst-color-table-row-zebra-high-bg: var(--pst-color-on-background);
+  --pst-color-table-row-zebra-low-bg: var(--pst-color-surface);
 
-    /* SD colors (Sphinx Design) */
-    --sd-color-primary: var(--pst-color-primary);
-    --sd-color-primary-text: var(--pst-color-primary-text);
-    --sd-color-primary-highlight: var(--pst-color-primary-highlight);
-    --sd-color-primary-bg: var(--pst-color-primary-bg);
-    --sd-color-primary-bg-text: #14181e;
-    --sd-color-secondary: var(--pst-color-secondary);
-    --sd-color-secondary-text: var(--pst-color-secondary-text);
-    --sd-color-secondary-highlight: var(--pst-color-secondary-highlight);
-    --sd-color-secondary-bg: var(--pst-color-secondary-bg);
-    --sd-color-secondary-bg-text: #14181e;
-    --sd-color-card-border: var(--pst-color-border);
+  /* SD colors (Sphinx Design) */
+  --sd-color-primary: var(--pst-color-primary);
+  --sd-color-primary-text: var(--pst-color-primary-text);
+  --sd-color-primary-highlight: var(--pst-color-primary-highlight);
+  --sd-color-primary-bg: var(--pst-color-primary-bg);
+  --sd-color-primary-bg-text: #14181e;
+  --sd-color-secondary: var(--pst-color-secondary);
+  --sd-color-secondary-text: var(--pst-color-secondary-text);
+  --sd-color-secondary-highlight: var(--pst-color-secondary-highlight);
+  --sd-color-secondary-bg: var(--pst-color-secondary-bg);
+  --sd-color-secondary-bg-text: #14181e;
+  --sd-color-card-border: var(--pst-color-border);
 
-    color-scheme: light;
+  color-scheme: light;
 }
 
 /* Dark theme with matching specificity */
 html[data-theme="dark"] {
-    /* Primary colors and variants */
-    --pst-color-primary: #9386f3;
-    --pst-color-primary-text: #ffffff;
-    --pst-color-primary-highlight: #7d75fe;
-    --pst-color-primary-highlight-text: #ffffff;
-    --pst-color-primary-bg: #141414;
+  /* Primary colors and variants */
+  --pst-color-primary: #9386f3;
+  --pst-color-primary-text: #ffffff;
+  --pst-color-primary-highlight: #7d75fe;
+  --pst-color-primary-highlight-text: #ffffff;
+  --pst-color-primary-bg: #141414;
 
-    /* Secondary colors */
-    --pst-color-secondary: #6d71fe;
-    --pst-color-secondary-text: #ffffff;
-    --pst-color-secondary-highlight: #7d75fe;
-    --pst-color-secondary-highlight-text: #ffffff;
-    --pst-color-secondary-bg: #141414;
+  /* Secondary colors */
+  --pst-color-secondary: #6d71fe;
+  --pst-color-secondary-text: #ffffff;
+  --pst-color-secondary-highlight: #7d75fe;
+  --pst-color-secondary-highlight-text: #ffffff;
+  --pst-color-secondary-bg: #141414;
 
-    /* Success colors */
-    --pst-color-success: #5fb488;
-    --pst-color-success-text: #ffffff;
-    --pst-color-success-highlight: #47a373;
-    --pst-color-success-highlight-text: #ffffff;
-    --pst-color-success-bg: #141414;
+  /* Success colors */
+  --pst-color-success: #5fb488;
+  --pst-color-success-text: #ffffff;
+  --pst-color-success-highlight: #47a373;
+  --pst-color-success-highlight-text: #ffffff;
+  --pst-color-success-bg: #141414;
 
-    /* Info colors */
-    --pst-color-info: #dfdff7;
-    --pst-color-info-text: #ffffff;
-    --pst-color-info-highlight: #6b6bdc;
-    --pst-color-info-highlight-text: #ffffff;
-    --pst-color-info-bg: #141414;
+  /* Info colors */
+  --pst-color-info: #dfdff7;
+  --pst-color-info-text: #ffffff;
+  --pst-color-info-highlight: #6b6bdc;
+  --pst-color-info-highlight-text: #ffffff;
+  --pst-color-info-bg: #141414;
 
-    /* Warning colors */
-    --pst-color-warning: #f36868;
-    --pst-color-warning-text: #ffffff;
-    --pst-color-warning-highlight: #f36868;
-    --pst-color-warning-highlight-text: #ffffff;
-    --pst-color-warning-bg: #141414;
+  /* Warning colors */
+  --pst-color-warning: #f36868;
+  --pst-color-warning-text: #ffffff;
+  --pst-color-warning-highlight: #f36868;
+  --pst-color-warning-highlight-text: #ffffff;
+  --pst-color-warning-bg: #141414;
 
-    /* Danger colors */
-    --pst-color-danger: #f36868;
-    --pst-color-danger-text: #ffffff;
-    --pst-color-danger-highlight: #f36868;
-    --pst-color-danger-highlight-text: #ffffff;
-    --pst-color-danger-bg: #141414;
+  /* Danger colors */
+  --pst-color-danger: #f36868;
+  --pst-color-danger-text: #ffffff;
+  --pst-color-danger-highlight: #f36868;
+  --pst-color-danger-highlight-text: #ffffff;
+  --pst-color-danger-bg: #141414;
 
-    /* Accent colors */
-    --pst-color-accent: #9386f3;
-    --pst-color-accent-bg: #141414;
+  /* Accent colors */
+  --pst-color-accent: #9386f3;
+  --pst-color-accent-bg: #141414;
 
-    /* Attention colors */
-    --pst-color-attention: var(--pst-color-warning);
-    --pst-color-attention-bg: var(--pst-color-warning-bg);
+  /* Attention colors */
+  --pst-color-attention: var(--pst-color-warning);
+  --pst-color-attention-bg: var(--pst-color-warning-bg);
 
-    /* Base colors */
-    --pst-color-background: #101010;
-    --pst-color-on-background: #141414;
-    --pst-color-surface: #141414;
-    --pst-color-on-surface: #ffffff;
-    --pst-color-text-base: #ffffff;
-    --pst-color-text-muted: #efefef;
-    --pst-color-text-active: #dfdff7;
-    --pst-color-heading: var(--pst-color-text-base);
-    --pst-color-border: #202020;
-    --pst-color-border-muted: #202020;
-    --pst-color-shadow: rgba(0, 0, 0, .3);
+  /* Base colors */
+  --pst-color-background: #101010;
+  --pst-color-on-background: #141414;
+  --pst-color-surface: #141414;
+  --pst-color-on-surface: #ffffff;
+  --pst-color-text-base: #ffffff;
+  --pst-color-text-muted: #efefef;
+  --pst-color-text-active: #dfdff7;
+  --pst-color-heading: var(--pst-color-text-base);
+  --pst-color-border: #202020;
+  --pst-color-border-muted: #202020;
+  --pst-color-shadow: rgba(0, 0, 0, 0.3);
 
-    /* Link colors */
-    --pst-color-link: #9386f3;
-    --pst-color-link-hover: #6b6bdc;
+  /* Link colors */
+  --pst-color-link: #9386f3;
+  --pst-color-link-hover: #6b6bdc;
 
-    /* Other UI elements */
-    --pst-color-inline-code: #dfdff7;
-    --pst-color-inline-code-links: #9386f3;
-    --pst-color-target: #141414;
-    --pst-color-blockquote-notch: #efefef;
+  /* Other UI elements */
+  --pst-color-inline-code: #dfdff7;
+  --pst-color-inline-code-links: #9386f3;
+  --pst-color-target: #141414;
+  --pst-color-blockquote-notch: #efefef;
 
-    /* Table colors */
-    --pst-color-table: #ffffff;
-    --pst-color-table-row-hover-bg: #202020;
-    --pst-color-table-inner-border: #202020;
-    --pst-color-table-outer-border: var(--pst-color-surface);
-    --pst-color-table-heading-bg: var(--pst-color-surface);
-    --pst-color-table-row-zebra-high-bg: var(--pst-color-on-background);
-    --pst-color-table-row-zebra-low-bg: var(--pst-color-surface);
+  /* Table colors */
+  --pst-color-table: #ffffff;
+  --pst-color-table-row-hover-bg: #202020;
+  --pst-color-table-inner-border: #202020;
+  --pst-color-table-outer-border: var(--pst-color-surface);
+  --pst-color-table-heading-bg: var(--pst-color-surface);
+  --pst-color-table-row-zebra-high-bg: var(--pst-color-on-background);
+  --pst-color-table-row-zebra-low-bg: var(--pst-color-surface);
 
-    /* Navigation colors */
-    --pst-color-navbar-background: var(--pst-color-surface);
-    --pst-color-navbar-text: var(--pst-color-text-base);
-    --pst-color-navbar-link: var(--pst-color-text-base);
-    --pst-color-navbar-link-hover: var(--pst-color-primary);
-    --pst-color-navbar-link-active: var(--pst-color-primary);
+  /* Navigation colors */
+  --pst-color-navbar-background: var(--pst-color-surface);
+  --pst-color-navbar-text: var(--pst-color-text-base);
+  --pst-color-navbar-link: var(--pst-color-text-base);
+  --pst-color-navbar-link-hover: var(--pst-color-primary);
+  --pst-color-navbar-link-active: var(--pst-color-primary);
 
-    /* Sidebar colors */
-    --pst-color-sidebar-background: var(--pst-color-surface);
-    --pst-color-sidebar-text: var(--pst-color-text-base);
-    --pst-color-sidebar-link: var(--pst-color-text-base);
-    --pst-color-sidebar-link-hover: var(--pst-color-primary);
-    --pst-color-sidebar-caption: var(--pst-color-text-muted);
+  /* Sidebar colors */
+  --pst-color-sidebar-background: var(--pst-color-surface);
+  --pst-color-sidebar-text: var(--pst-color-text-base);
+  --pst-color-sidebar-link: var(--pst-color-text-base);
+  --pst-color-sidebar-link-hover: var(--pst-color-primary);
+  --pst-color-sidebar-caption: var(--pst-color-text-muted);
 
-    /* TOC colors */
-    --pst-color-toc-background: var(--pst-color-surface);
-    --pst-color-toc-text: var(--pst-color-text-base);
-    --pst-color-toc-link: var(--pst-color-text-base);
-    --pst-color-toc-link-hover: var(--pst-color-primary);
-    --pst-color-toc-link-active: var(--pst-color-primary);
+  /* TOC colors */
+  --pst-color-toc-background: var(--pst-color-surface);
+  --pst-color-toc-text: var(--pst-color-text-base);
+  --pst-color-toc-link: var(--pst-color-text-base);
+  --pst-color-toc-link-hover: var(--pst-color-primary);
+  --pst-color-toc-link-active: var(--pst-color-primary);
 
-    /* SD colors (Sphinx Design) */
-    --sd-color-primary: var(--pst-color-primary);
-    --sd-color-primary-text: var(--pst-color-primary-text);
-    --sd-color-primary-highlight: var(--pst-color-primary-highlight);
-    --sd-color-primary-bg: var(--pst-color-primary-bg);
-    --sd-color-primary-bg-text: #ffffff;
-    --sd-color-secondary: var(--pst-color-secondary);
-    --sd-color-secondary-text: var(--pst-color-secondary-text);
-    --sd-color-secondary-highlight: var(--pst-color-secondary-highlight);
-    --sd-color-secondary-bg: var(--pst-color-secondary-bg);
-    --sd-color-secondary-bg-text: #ffffff;
-    --sd-color-card-border: var(--pst-color-border);
+  /* SD colors (Sphinx Design) */
+  --sd-color-primary: var(--pst-color-primary);
+  --sd-color-primary-text: var(--pst-color-primary-text);
+  --sd-color-primary-highlight: var(--pst-color-primary-highlight);
+  --sd-color-primary-bg: var(--pst-color-primary-bg);
+  --sd-color-primary-bg-text: #ffffff;
+  --sd-color-secondary: var(--pst-color-secondary);
+  --sd-color-secondary-text: var(--pst-color-secondary-text);
+  --sd-color-secondary-highlight: var(--pst-color-secondary-highlight);
+  --sd-color-secondary-bg: var(--pst-color-secondary-bg);
+  --sd-color-secondary-bg-text: #ffffff;
+  --sd-color-card-border: var(--pst-color-border);
 
-    color-scheme: dark;
+  color-scheme: dark;
 }
 
 body {
-    font-family: var(--pst-font-family-base);
-    overflow-x: hidden;
-    width: 100%;
+  font-family: var(--pst-font-family-base);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 h1,
@@ -253,94 +255,138 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: var(--pst-font-family-heading);
-    font-weight: 500;
+  font-family: var(--pst-font-family-heading);
+  font-weight: 500;
 }
 
 code {
-    font-family: var(--pst-font-family-monospace);
+  font-family: var(--pst-font-family-monospace);
 }
 
 code span {
-    background: var(--pst-color-surface);
+  background: var(--pst-color-surface);
 }
 
 kbd {
-    all: unset;
-    width: fit-content;
-    text-wrap: nowrap;
+  all: unset;
+  width: fit-content;
+  text-wrap: nowrap;
 }
 
 /* Remove sidebar-specific styles that were for pydata theme */
 .sidebar-primary-item:not(:last-child):not(:first-child) {
-    position: static;
-    margin-bottom: 0;
+  position: static;
+  margin-bottom: 0;
 }
 
 .sidebar-primary-item:not(:last-child):not(:first-child)::after {
-    display: none;
+  display: none;
 }
 
 /* Add some furo-specific customizations */
 .sidebar-brand {
-    font-family: var(--pst-font-family-heading);
+  font-family: var(--pst-font-family-heading);
 }
 
 .sidebar-search-container {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 /* Add custom spacing and remove footer */
 main {
-    margin-top: 2rem !important;
+  margin-top: 2rem !important;
+}
+
+.sidebar-drawer {
+    padding-bottom: 2rem !important;
+    width: 20em !important;
+}
+
+
+.sidebar-container {
+    width: 17.5em !important;
 }
 
 footer {
-    display: block !important;
+  width: 66em !important;
+  display: block !important;
 }
 
 /* Reduce right margin */
 .content {
-    width: 60em !important;
-    margin-right: 1rem !important;
+    width: 66em !important;
+  margin-right: 1rem !important;
 }
 
 /* More specific selectors to override Furo defaults */
 .bd-main .bd-content .bd-article-container {
-    margin-top: 5rem !important;
+  margin-top: 5rem !important;
 }
 
-article {
-    width: 60em !important;
-    padding-right: 1rem !important;
-    margin-top: 5rem !important;
+article, .sidebar-sticky, .toc-drawer {
+  padding-right: 1rem !important;
+  margin-top: 5rem !important;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+/* Custom scrollbar styling */
+.sidebar-tree {
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 1rem;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
+.sidebar-tree::-webkit-scrollbar {
+  width: 8px;
 }
 
-::-webkit-scrollbar-thumb {
-    background-color: var(--color-sidebar-background-border);
-    border-radius: 4px;
+.sidebar-tree::-webkit-scrollbar-track {
+  background: #f8f9fb;
 }
 
-/* Dark mode scrollbar */
-[data-theme="dark"] {
-    scrollbar-color: var(--color-sidebar-background-border) transparent;
+.sidebar-tree::-webkit-scrollbar-thumb {
+  background-color: #7f6cef;
+  border-radius: 4px;
 }
 
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background-color: var(--color-sidebar-background-border);
+/* Enhance topic collapsing behavior */
+.toctree-wrapper .caption {
+  cursor: pointer;
+  user-select: none;
 }
 
-/* Only show scrollbar when needed */
-html {
-    overflow-y: auto;
+.toctree-wrapper .caption:hover {
+  color: var(--pst-color-primary);
+}
+
+.toctree-wrapper ul {
+  transition: max-height 0.3s ease-out;
+}
+
+/* Hide theme switcher completely */
+.theme-toggle-header {
+  display: none !important;
+}
+
+[data-theme-switch] {
+  display: none !important;
+}
+
+.theme-toggle {
+  display: none !important;
+}
+
+
+h1, h2 {
+    color: var(--sd-color-primary);
+    margin-top: 3rem;
+}
+
+h3, h4 {
+    color: var(--sd-color-primary);
+    margin-top: 2rem;
+}
+
+.toc-drawer {
+    display: none !important;
 }
