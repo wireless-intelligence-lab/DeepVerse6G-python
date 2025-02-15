@@ -1,14 +1,11 @@
-deepverse.datasets package
-==========================
+datasets package
+================
 
 .. automodule:: deepverse.datasets
    :members:
    :undoc-members:
    :show-inheritance:
    :no-index:
-
-Submodules
-----------
 
 .. toctree::
    :maxdepth: 4

@@ -1,13 +1,10 @@
-deepverse.visualizers package
+visualizers package
 =============================
 
 .. automodule:: deepverse.visualizers
    :members:
    :undoc-members:
    :show-inheritance:
-
-Submodules
-----------
 
 .. toctree::
    :maxdepth: 4

@@ -1,13 +1,5 @@
-DeepVerse 6G
-============
-
-.. automodule:: deepverse
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Modules
--------
+=======
 
 .. toctree::
    :maxdepth: 2

@@ -135,9 +135,9 @@ class FMCW(Waveform):
         
         f_IF = self.chirp_slope * tau
         phi_IF = (self.f_0 - 0.5 * self.chirp_slope * tau) * tau # Second term may be removed
- 
+        phase = f_IF * t + phi_IF
         # IF signal: P x T (chirp time samples)
         # Conjugate to make it cir e^(-j phase)
-        IF_signal = np.exp(1j * 2 * np.pi * (f_IF * t + phi_IF))
+        IF_signal = np.exp(1j * 2 * np.pi * phase)
         
-        return IF_signal
+        return IF_signal, phase

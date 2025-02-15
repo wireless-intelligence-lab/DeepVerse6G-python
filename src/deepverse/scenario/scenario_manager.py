@@ -148,6 +148,7 @@ class ScenarioManager:
             for filename in filenames:
                 files.append(os.path.join(root, filename))
         files = natsorted(files)  # Sort the files naturally
+        files = np.array(files)
         return files
 
     def get_modality_data(self, modality_name):

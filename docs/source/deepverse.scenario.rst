@@ -1,13 +1,10 @@
-deepverse.scenario package
-==========================
+scenario package
+================
 
 .. automodule:: deepverse.scenario
    :members:
    :undoc-members:
    :show-inheritance:
-
-Submodules
-----------
 
 .. toctree::
    :maxdepth: 4
