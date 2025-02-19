@@ -243,6 +243,15 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
+/* Update background colors to match pst variables based on theme */
+body[data-theme="light"] {
+    background: #FFFFFF !important;
+}
+
+body[data-theme="dark"] {
+    background: #101010 !important;
+}
+
 body {
   font-family: var(--pst-font-family-base);
   overflow-x: hidden;
@@ -302,6 +311,9 @@ main {
     width: 20em !important;
 }
 
+body[data-theme="dark"] .sidebar-drawer {
+  background: #141414 !important;
+}
 
 .sidebar-container {
     width: 17.5em !important;
@@ -320,12 +332,12 @@ footer {
 
 /* More specific selectors to override Furo defaults */
 .bd-main .bd-content .bd-article-container {
-  margin-top: 5rem !important;
+  margin-top: 3rem !important;
 }
 
 article, .sidebar-sticky, .toc-drawer {
   padding-right: 1rem !important;
-  margin-top: 5rem !important;
+  margin-top: 3rem !important;
 }
 
 /* Custom scrollbar styling */
