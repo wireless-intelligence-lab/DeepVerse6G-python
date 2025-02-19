@@ -139,58 +139,6 @@ class OFDMChannel(Channel):
 
         self.coeffs = channel
 
-# class TimeDomainChannel(Channel):
-#     def __init__(self, tx_antenna, rx_antenna, paths, carrier_freq, bandwidth, params):
-#         """
-#         Initialize the TimeDomainChannel object.
-
-#         Parameters:
-#         ----------
-#         tx_antenna : Antenna object
-#             Transmitting antenna object.
-#         rx_antenna : Antenna object
-#             Receiving antenna object.
-#         paths : list of dict
-#             List containing the path parameters for each path.
-#         carrier_freq : float
-#             Carrier frequency in Hz.
-#         bandwidth : float
-#             Bandwidth in Hz.
-#         params : dict
-#             Dictionary containing the simulation parameters.
-#         """
-#         super().__init__(tx_antenna, rx_antenna, paths, carrier_freq, bandwidth)
-#         self.params = params
-
-#     def generate(self):
-#         """
-#         Generate the time-domain MIMO channel based on the paths.
-
-#         Returns:
-#         -------
-#         channel : numpy.ndarray
-#             Generated MIMO channel.
-#         LoS_status : numpy.ndarray
-#             Line-of-sight status for each path.
-#         """
-#         M_tx = self.tx_antenna.num_elements()
-#         M_rx = self.rx_antenna.num_elements()
-
-#         channel = np.zeros((len(self.paths), M_rx, M_tx, self.params['NUM_PATHS']), dtype=np.csingle)
-#         LoS_status = np.zeros((len(self.paths)), dtype=np.int8) - 2
-
-#         for i in tqdm(range(len(self.paths)), desc='Generating channels'):
-#             if self.paths[i]['PATH_NUM'] == 0:
-#                 LoS_status[i] = -1
-#                 continue
-
-#             array_response_TX = self.tx_antenna.array_response_vector(self.paths[i]['DOD_THETA'], self.paths[i]['DOD_PHI'])
-#             self.rx_antenna.rotation = self.paths[i]['ROTATION']
-#             array_response_RX = self.rx_antenna.array_response_vector(self.paths[i]['DOA_THETA'], self.paths[i]['DOA_PHI'])
-
-#             channel[i, :, :, :self.paths[i]['PATH_NUM']] = array_response_RX[:, None, :] * array_response_TX[None, :, :] * (np.sqrt(self.paths[i]['RX_POW']) * np.exp(1j * np.deg2rad(self.paths[i]['PHASE'])))[None, None, :]
-
-#         return channel, LoS_status
 
 #%%
 class RadarChannel(Channel):
@@ -243,48 +191,4 @@ class RadarChannel(Channel):
 
         self.coeffs = IF_signal
     
-    # # TODO: Frequency domain implementation
-    # def generate_channel_coeffs_freq(self):
-    #     """
-    #     Generate the FMCW radar signal based on the paths, in frequency domain.
-
-    #     Returns:
-    #     -------
-    #     IF_signal : numpy.ndarray
-    #         Intermediate Frequency (IF) signal for FMCW radar.
-    #     """
-    #     Fs = self.params['Fs']
-    #     Ts = 1 / Fs
-    #     T_PRI = self.params['T_PRI']
-    #     N_chirp = self.params['N_chirp']
-    #     N_samples = self.params['N_samples']
-    #     light_speed = c.LIGHTSPEED  # Speed of light in vacuum
-
-    #     if self.paths.num_paths() == 0:
-    #         return np.zeros((self.rx_antenna.num_elements(), self.tx_antenna.num_elements(), N_samples, N_chirp), dtype=np.complex64)
-
-    #     # Define time and frequency vectors
-    #     time = np.arange(N_samples) * Ts
-    #     frequency = np.fft.fftfreq(N_samples, Ts)
-
-    #     # Initialize IF signal array
-    #     IF_signal = np.zeros((self.rx_antenna.num_elements(), self.tx_antenna.num_elements(), N_samples, N_chirp), dtype=np.complex64)
-
-    #     for chirp in range(N_chirp):
-    #         # Compute the frequency modulation due to each chirp
-    #         time_slow = time + chirp * T_PRI
-    #         phase_shift = 2 * np.pi * self.paths.doppler_shift[:, None] * time_slow  # Doppler shift phase
-    #         frequency_shift = self.paths.doppler_shift[:, None] * time_slow / light_speed  # Doppler frequency shift
-
-    #         # Compute channel response for each path
-    #         path_response = np.exp(-1j * phase_shift)
-    #         path_response *= np.exp(-1j * 2 * np.pi * frequency[:, None] * self.paths.ToA)  # Time delay in frequency domain
-    #         path_response *= np.sqrt(self.paths.power[:, None])  # Scale by path power
-
-    #         # Aggregate response across all paths
-    #         channel_response = np.sum(path_response, axis=0)
-
-    #         # Transform to time domain to get the IF signal for this chirp
-    #         IF_signal[:, :, :, chirp] = np.fft.ifft(channel_response)
-
-    #     return IF_signal
+    
