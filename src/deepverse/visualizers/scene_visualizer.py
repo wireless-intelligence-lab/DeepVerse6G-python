@@ -222,52 +222,157 @@ class SceneVisualizer(BaseVisualizer):
         return x, y, z
 
 
-    def _visualize_with_matplotlib(self, sensors, moving_objects, time_sample):
-        """
-        Visualizes the scene using matplotlib (2D).
+    # def _visualize_with_matplotlib(self, sensors, moving_objects, time_sample):
+    #     """
+    #     Visualizes the scene using matplotlib (2D).
 
-        Args:
-            sensors (dict): Dictionary of sensor data.
-            moving_objects (dict): Dictionary of moving objects.
-            time_sample (int, optional): The time sample to visualize.
-        """
-        plt = self.backend_lib['plt']
-        patches = self.backend_lib['patches']
+    #     Args:
+    #         sensors (dict): Dictionary of sensor data.
+    #         moving_objects (dict): Dictionary of moving objects.
+    #         time_sample (int, optional): The time sample to visualize.
+    #     """
+    #     plt = self.backend_lib['plt']
+    #     patches = self.backend_lib['patches']
 
-        colors = list(mcolors.TABLEAU_COLORS.keys())
-        color_map = {obj_id: colors[i % len(colors)] for i, obj_id in enumerate(moving_objects)}
+    #     colors = list(mcolors.TABLEAU_COLORS.keys())
+    #     color_map = {obj_id: colors[i % len(colors)] for i, obj_id in enumerate(moving_objects)}
 
-        fig, ax = plt.subplots()
+    #     fig, ax = plt.subplots()
 
-        # Plot sensors
-        for modality, sensor_dict in sensors.items():
-            for sensor_id, sensor in sensor_dict.items():
-                loc = sensor.get_properties().get('location')
-                if loc:
-                    ax.scatter(loc[0], loc[1], label=f'{modality} {sensor_id}', marker='o')
+    #     # Plot sensors
+    #     for modality, sensor_dict in sensors.items():
+    #         for sensor_id, sensor in sensor_dict.items():
+    #             loc = sensor.get_properties().get('location')
+    #             if loc:
+    #                 ax.scatter(loc[0], loc[1], label=f'{modality} {sensor_id}', marker='o')
 
-        # Plot moving objects
-        for obj_id, obj in moving_objects.items():
-            properties = obj.get_properties_at_time(time_sample) if time_sample is not None else obj.get_properties_at_time(obj.time[0])  # Default to the first time sample
-            if properties:
-                loc = properties['location']
-                bb = [obj.type['length'], obj.type['width'], obj.type['height']]
-                # Adjust location to the center of the bounding box for plotting
+    #     # Plot moving objects
+    #     for obj_id, obj in moving_objects.items():
+    #         properties = obj.get_properties_at_time(time_sample) if time_sample is not None else obj.get_properties_at_time(obj.time[0])  # Default to the first time sample
+    #         if properties:
+    #             loc = properties['location']
+    #             bb = [obj.type['length'], obj.type['width'], obj.type['height']]
+    #             # Adjust location to the center of the bounding box for plotting
                 
-                color = mcolors.to_rgb(color_map[obj_id])
-                ax.scatter(loc[0], loc[1], label=f'Object {obj_id}', marker='^', color=color)
+    #             color = mcolors.to_rgb(color_map[obj_id])
+    #             ax.scatter(loc[0], loc[1], label=f'Object {obj_id}', marker='^', color=color)
 
-                # Draw bounding box
-                rect = patches.Rectangle((loc[0] - bb[0]/2, loc[1] - bb[1]/2), bb[0], bb[1], angle=properties['angle'], rotation_point='center', fill=False, edgecolor=color, linewidth=2, alpha=0.5)
-                ax.add_patch(rect)
+    #             # Draw bounding box
+    #             rect = patches.Rectangle((loc[0] - bb[0]/2, loc[1] - bb[1]/2), bb[0], bb[1], angle=properties['angle'], rotation_point='center', fill=False, edgecolor=color, linewidth=2, alpha=0.5)
+    #             ax.add_patch(rect)
 
-        ax.set_aspect('equal')
-        ax.set_xlabel('X (m)')
-        ax.set_ylabel('Y (m)')
-        ax.legend()
-        plt.title(f"Scene at Time Sample: {time_sample if time_sample is not None else obj.time[0]}")
-        plt.show()
+    #     ax.set_aspect('equal')
+    #     ax.set_xlabel('X (m)')
+    #     ax.set_ylabel('Y (m)')
+    #     ax.legend()
+    #     plt.title(f"Scene at Time Sample: {time_sample if time_sample is not None else obj.time[0]}")
+    #     plt.show()
 
+
+    # def _visualize_with_pyvista(self, sensors, moving_objects, time_sample):
+    #     """
+    #     Visualizes the scene using pyvista (3D).
+
+    #     Args:
+    #         sensors (dict): Dictionary of sensor data.
+    #         moving_objects (dict): Dictionary of moving objects.
+    #         time_sample (int, optional): The time sample to visualize. If None, the slider will be available.
+    #     """
+                
+    #     def add_sensors():
+                
+    #         # Define sensor colors and shapes
+    #         sensor_colors = {
+    #             'LiDAR': 'red',
+    #             'camera': 'green'
+    #         }
+    #         # Initial plot (for time_sample=0 or a default)
+    #         for modality, sensor_dict in sensors.items():
+    #             for sensor_id, sensor in sensor_dict.items():
+    #                 loc = sensor.get_properties().get('location')
+    #                 if loc:
+    #                     # Get color and shape based on modality
+    #                     color = sensor_colors.get(modality, 'blue')  # Default to blue if modality not found
+
+    #                     if modality == 'LiDAR':
+    #                         # Add a cone for lidar
+    #                         mesh = pv.Cone(center=loc, direction=[0, 0, 1], height=1.0, radius=0.5, resolution=10)
+    #                     elif modality == 'camera':
+    #                         # Add a tetrahedron for camera
+    #                         mesh = pv.Tetrahedron()
+    #                         # Scale the tetrahedron to make it more visible
+    #                         mesh.scale([0.5, 0.5, 1.0], inplace=True)
+    #                         # Translate the mesh to the sensor location
+    #                         mesh.translate(loc, inplace=True)
+    #                         color = 'blue'
+    #                     else:
+    #                         mesh = pv.Sphere(radius=0.5, center=loc)
+
+    #                     plotter.add_mesh(mesh, color=color, name=f'{modality} {sensor_id}')
+
+    #                     # plotter.add_point_labels([loc], [f"{modality} {sensor_id}"], point_size=0, font_size=14, text_color='black', shape_opacity=0.5)
+    #                     plotter.add_point_labels([loc], [f"{sensor_id.split('_')[0]}"], point_size=0, font_size=14, text_color='black', shape_opacity=0.5)
+                        
+    #     def add_moving_objects(time_sample):
+    #         for obj_id, obj in moving_objects.items():
+    #             properties = obj.get_properties_at_time(time_sample)
+    #             if properties:
+    #                 loc = properties['location']
+    #                 bb = [obj.type['length'], obj.type['width'], obj.type['height']]
+    #                 loc[2] = loc[2] + bb[2]/2
+    #                 color = mcolors.to_rgb(color_map[obj_id])
+    #                 mesh = pv.Cube(x_length=bb[0], y_length=bb[1], z_length=bb[2])
+    #                 mesh.rotate_y(properties['slope'], inplace=True)
+    #                 mesh.rotate_z(properties['angle'], inplace=True)
+    #                 mesh.translate(loc, inplace=True)
+    #                 plotter.add_mesh(mesh, color=color, name=f'Object {obj_id}', opacity=0.5)
+
+    #     def update_plot(time_sample):
+    #         """
+    #         Updates the plot for a given time sample.
+    #         This function is called when the slider is moved (or can be called directly).
+    #         """
+    #         time_sample = int(time_sample)
+    #         plotter.clear_actors() # Clear only actors (meshes), not widgets like the slider
+
+    #         plotter.add_mesh(plane, color="lightgray", opacity=0.5, style='wireframe')
+
+    #         add_sensors()
+    #         add_moving_objects(time_sample)
+            
+    #         plotter.render()
+        
+        
+    #     pv = self.backend_lib
+
+    #     plotter = pv.Plotter()
+
+    #     # Add XY plane
+    #     plane = pv.Plane(center=(0, 0, 0), direction=(0, 0, 1), i_size=600, j_size=600)
+    #     plotter.add_mesh(plane, color="lightgray", opacity=0.5, style='wireframe')
+
+    #     colors = list(mcolors.TABLEAU_COLORS.keys())
+    #     color_map = {obj_id: colors[i % len(colors)] for i, obj_id in enumerate(moving_objects)}
+
+    #     add_sensors()
+    #     add_moving_objects(0)
+
+    #     # If time_sample is provided, visualize only that time sample
+    #     if time_sample is not None:
+    #         update_plot(time_sample)
+    #         plotter.show()
+    #     # Otherwise, create an interactive slider
+    #     else:
+    #         min_time = min(obj.time[0] for obj in moving_objects.values())
+    #         max_time = max(obj.time[-1] for obj in moving_objects.values())
+
+    #         slider = plotter.add_slider_widget(callback=update_plot,
+    #                                            rng=[min_time, max_time],
+    #                                            title='Time',
+    #                                            value=min_time,
+    #                                            fmt='%.0f'
+    #                                            )
+    #         plotter.show()
 
     def _visualize_with_pyvista(self, sensors, moving_objects, time_sample):
         """
@@ -278,68 +383,72 @@ class SceneVisualizer(BaseVisualizer):
             moving_objects (dict): Dictionary of moving objects.
             time_sample (int, optional): The time sample to visualize. If None, the slider will be available.
         """
-                
+        min_time = min(obj.time[0] for obj in moving_objects.values())
+        max_time = max(obj.time[-1] for obj in moving_objects.values())
+
         def add_sensors():
-                
-            # Define sensor colors and shapes
             sensor_colors = {
-                'lidar': 'red',
+                'LiDAR': 'red',
                 'camera': 'green'
             }
-            # Initial plot (for time_sample=0 or a default)
             for modality, sensor_dict in sensors.items():
                 for sensor_id, sensor in sensor_dict.items():
                     loc = sensor.get_properties().get('location')
                     if loc:
-                        # Get color and shape based on modality
-                        color = sensor_colors.get(modality, 'blue')  # Default to blue if modality not found
-
+                        color = sensor_colors.get(modality, 'blue')
                         if modality == 'LiDAR':
-                            # Add a cone for lidar
                             mesh = pv.Cone(center=loc, direction=[0, 0, 1], height=1.0, radius=0.5, resolution=10)
                         elif modality == 'camera':
-                            # Add a tetrahedron for camera
-                            mesh = pv.Tetrahedron(center=loc)
-                            # Scale the tetrahedron to make it more visible
-                            mesh.scale([0.5, 0.5, 1.0], inplace=True)  # Adjust scaling as needed
+                            mesh = pv.Tetrahedron()
+                            mesh.scale([0.5, 0.5, 1.0], inplace=True)
+                            mesh.translate(loc, inplace=True)
+                            color = 'blue'
                         else:
                             mesh = pv.Sphere(radius=0.5, center=loc)
-
                         plotter.add_mesh(mesh, color=color, name=f'{modality} {sensor_id}')
-
-                        plotter.add_point_labels([loc], [f"{modality} {sensor_id}"], point_size=0, font_size=14, text_color='black', shape_opacity=0.5)
-                        
+                        plotter.add_point_labels([loc], [f"{sensor_id.split('_')[0]}"], 
+                                                point_size=0, font_size=14, 
+                                                text_color='black', shape_opacity=0.5)
+                            
         def add_moving_objects(time_sample):
             for obj_id, obj in moving_objects.items():
                 properties = obj.get_properties_at_time(time_sample)
                 if properties:
-                    loc = properties['location']
+                    loc = properties['location'].copy()
                     bb = [obj.type['length'], obj.type['width'], obj.type['height']]
-                    loc[2] = loc[2] + bb[2]/2
+                    loc[2] = loc[2] + bb[2] / 2
                     color = mcolors.to_rgb(color_map[obj_id])
-                    plotter.add_mesh(pv.Cube(center=loc, x_length=bb[0], y_length=bb[1], z_length=bb[2]), color=color, name=f'Object {obj_id}', opacity=0.5)
+                    mesh = pv.Cube(x_length=bb[0], y_length=bb[1], z_length=bb[2])
+                    mesh.rotate_y(properties['slope'], inplace=True)
+                    mesh.rotate_z(properties['angle'], inplace=True)
+                    mesh.translate(loc, inplace=True)
+                    plotter.add_mesh(mesh, color=color, name=f'Object {obj_id}', opacity=0.5)
 
-        def update_plot(time_sample):
-            """
-            Updates the plot for a given time sample.
-            This function is called when the slider is moved (or can be called directly).
-            """
+        def _update_plot(time_sample):
             time_sample = int(time_sample)
-            plotter.clear_actors() # Clear only actors (meshes), not widgets like the slider
-
+            plotter.clear_actors()
             plotter.add_mesh(plane, color="lightgray", opacity=0.5, style='wireframe')
-
             add_sensors()
             add_moving_objects(time_sample)
-            
             plotter.render()
-        
-        
+
+        def update_plot_wrapper(time_sample=None, next=None, prev=None):
+            if not time_sample:
+                time_sample = slider.GetRepresentation().GetValue()
+                if next:
+                    time_sample = time_sample + 1
+                elif prev:
+                    time_sample = time_sample - 1
+                else:
+                    time_sample = time_sample
+            time_sample = max(time_sample, min_time)
+            time_sample = min(time_sample, max_time)
+            _update_plot(time_sample)
+            slider.GetRepresentation().SetValue(time_sample)
+
+        # Initialize pyvista components
         pv = self.backend_lib
-
         plotter = pv.Plotter()
-
-        # Add XY plane
         plane = pv.Plane(center=(0, 0, 0), direction=(0, 0, 1), i_size=600, j_size=600)
         plotter.add_mesh(plane, color="lightgray", opacity=0.5, style='wireframe')
 
@@ -351,17 +460,18 @@ class SceneVisualizer(BaseVisualizer):
 
         # If time_sample is provided, visualize only that time sample
         if time_sample is not None:
-            update_plot(time_sample)
+            _update_plot(time_sample)
             plotter.show()
         # Otherwise, create an interactive slider
         else:
-            min_time = min(obj.time[0] for obj in moving_objects.values())
-            max_time = max(obj.time[-1] for obj in moving_objects.values())
+            slider = plotter.add_slider_widget(callback=_update_plot,
+                                                rng=[min_time, max_time],
+                                                title='Time',
+                                                value=min_time,
+                                                fmt='%.0f')
 
-            slider = plotter.add_slider_widget(callback=update_plot,
-                                               rng=[min_time, max_time],
-                                               title='Time',
-                                               value=min_time,
-                                               fmt='%.0f'
-                                               )
+            plotter.add_key_event('a', lambda: update_plot_wrapper(prev=True))
+            plotter.add_key_event('d', lambda: update_plot_wrapper(next=True))
+
+            # Start the event loop.
             plotter.show()

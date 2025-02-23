@@ -111,6 +111,8 @@ class ScenarioManager:
                 mat_data = scipy.io.loadmat(mat_path, simplify_cells=True)
                 object_types = mat_data['object_info']  # Information about each object type
                 time_samples = mat_data['scene']  # Time samples with object data
+                object_types = object_types if isinstance(object_types, list) else [object_types]
+                time_samples = time_samples if isinstance(time_samples, list) else [time_samples]
                 for t, sample in enumerate(time_samples):
                     # Handle cases where 'objects' might be a single dictionary instead of a list
                     if isinstance(sample['objects'], dict):

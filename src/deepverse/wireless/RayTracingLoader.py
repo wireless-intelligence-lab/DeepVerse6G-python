@@ -15,7 +15,7 @@ class RayTracingLoader:
 
         # -- To validate the format --
         # TODO: To be written..
-        self.num_ue = self.data_tables['rx']['rx_end'].max()
+        self.num_ue = 0 if self.data_tables['rx'].empty else self.data_tables['rx']['rx_end'].max()
         self.num_bs = len(self.data_tables['tx'])
         self.num_files_per_bs = (self.data_tables['rx']['tx'] == 1).sum() # Pick number of BSs from the BS file
         
@@ -61,7 +61,7 @@ class RayTracingLoader:
 
         # Filter further based on generation_idx
         filtered_df = filtered_df[
-            filtered_df.apply(lambda row: np.any((generation_idx >= row['rx_start']) & (generation_idx < row['rx_end'])), axis=1)
+            filtered_df.apply(lambda row: np.any((generation_idx >= row['rx_start']) & (generation_idx <= row['rx_end'])), axis=1)
         ]
         
         ray_data = [] # May be converted to np.array
@@ -72,7 +72,7 @@ class RayTracingLoader:
             rx_start = row['rx_start']
             rx_end = row['rx_end']
             
-            rx_in_file = generation_idx[(generation_idx >= rx_start) & (generation_idx < rx_end)]
+            rx_in_file = generation_idx[(generation_idx >= rx_start) & (generation_idx <= rx_end)]
             file_data = scipy.io.loadmat(file_path)
             # TODO: somehow clean the next for loop
             for rx in rx_in_file:

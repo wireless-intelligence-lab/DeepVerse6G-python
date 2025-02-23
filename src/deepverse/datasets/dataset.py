@@ -44,7 +44,7 @@ class Dataset:
 
         # Initialize modality-specific datasets based on the scenario configuration
         # TODO: Add an enumerator class, load by name and also update scenario manager to use the enumerator.
-        if 'cam' in self.scenario.sensors:
+        if 'camera' in self.scenario.sensors:
             self.camera_dataset = CameraDataset(self.params, self.scenario.sensors['camera'])
         if 'LiDAR' in self.scenario.sensors:
             self.lidar_dataset = LiDARDataset(self.params, self.scenario.sensors['LiDAR'])
@@ -93,10 +93,14 @@ class Dataset:
             if ue_idx is None or bs_idx is None:
                 raise ValueError("ue_idx & bs_idx must be specified for comm modality")
             return self.comm_dataset.get_bs_channel(ue_idx, bs_idx, time_idx=index)
-        elif modality == 'loc':
+        elif modality == 'loc-ue':
             if ue_idx is None:
                 raise ValueError("ue_idx must be specified for comm modality")
             return self.comm_dataset.get_ue_location(ue_idx, bs_idx=0, time_idx=index) # Assuming bs_idx=0 is fixed for location
+        elif modality == 'loc-bs':
+            if bs_idx is None:
+                raise ValueError("bs_idx must be specified for comm modality")
+            return self.comm_dataset.get_bs_location(bs_idx, time_idx=index) # Assuming bs_idx=0 is fixed for location
         elif modality == 'mobility':
             return self.mobility_dataset.get_sample(object_id=ue_idx, sample_index=index)
         else:
@@ -107,7 +111,7 @@ class Dataset:
         Visualizes a data sample from a specific modality.
 
         Args:
-            modality (str): The modality to visualize ('lidar' or 'camera').
+            modality (str): The modality to visualize ('lidar' or 'cam').
             device_index (int): Index of the device for the specified modality.
             sample_index (int): The index of the data sample.
 
@@ -126,7 +130,7 @@ class Dataset:
         Sets the visualization backend for a specific modality.
 
         Args:
-            modality (str): The modality to set the backend for ('lidar' or 'camera').
+            modality (str): The modality to set the backend for ('lidar' or 'cam').
             backend (str): The visualization backend to use.
 
         Raises:
