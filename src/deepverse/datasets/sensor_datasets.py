@@ -251,13 +251,20 @@ class MobilityDataset:
             - If object_id is None and sample_index is specified: Returns a list of tuples (time, object properties) for all objects at the specified time index.
             - If both object_id and sample_index are None: Returns the entire self.objects dictionary.
         """
-        if (object_id is not None) and sample_index is None:
+        if isinstance(sample_index, int):
+            dataset_sample_index = np.array(self.params['scenes'])[sample_index]
+        elif sample_index is None:
+            dataset_sample_index = None
+        else:
+            raise TypeError('The sample_index parameter needs to be integer')
+        
+        if (object_id is not None) and dataset_sample_index is None:
             return self.objects[object_id]
-        if (object_id is not None) and (sample_index is not None):
-            return self.objects[object_id].get_properties_at_time(sample_index) # Assumes moving objects have a method 'get_properties_at_time'
-        if object_id is None and (sample_index is not None):
+        if (object_id is not None) and (dataset_sample_index is not None):
+            return self.objects[object_id].get_properties_at_time(dataset_sample_index) # Assumes moving objects have a method 'get_properties_at_time'
+        if object_id is None and (dataset_sample_index is not None):
             result = []
             for obj_id, samples in self.objects.items():
-                result.extend([(t, obj) for t, obj in samples if t == sample_index])
+                result.extend([(t, obj) for t, obj in samples if t == dataset_sample_index])
             return result
         return self.objects

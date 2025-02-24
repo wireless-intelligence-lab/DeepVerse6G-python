@@ -56,7 +56,7 @@ class Dataset:
         self.radar_dataset = RadarDataset(self.param_manager.get_filtered_params('radar'))
         self.comm_dataset = CommunicationDataset(self.param_manager.get_filtered_params('comm'))
 
-    def get_sample(self, modality, index=None, device_index=None, ue_idx=None, bs_idx=None):
+    def get_sample(self, modality, index=None, device_index=None, ue_idx=None, bs_idx=None, object_id=None):
         """
         Retrieves a data sample from a specific modality.
 
@@ -102,7 +102,7 @@ class Dataset:
                 raise ValueError("bs_idx must be specified for comm modality")
             return self.comm_dataset.get_bs_location(bs_idx, time_idx=index) # Assuming bs_idx=0 is fixed for location
         elif modality == 'mobility':
-            return self.mobility_dataset.get_sample(object_id=ue_idx, sample_index=index)
+            return self.mobility_dataset.get_sample(object_id=object_id, sample_index=index)
         else:
             raise ValueError("Invalid modality")
 

@@ -115,17 +115,17 @@ class OFDMChannel(Channel):
             return
         
         
-        M_tx = self.tx_antenna.num_elements()
-        M_rx = self.rx_antenna.num_elements()
+        N_tx = self.tx_antenna.num_elements()
+        N_rx = self.rx_antenna.num_elements()
 
-        channel = np.zeros((M_rx, M_tx, len(self.subcarriers)), dtype=np.csingle)
+        channel = np.zeros((N_rx, N_tx, len(self.subcarriers)), dtype=np.csingle)
 
         # Antenna Array
         array_response_TX = self.tx_antenna.array_response_vector(self.paths.DoD_theta, self.paths.DoD_phi)
         array_response_RX = self.rx_antenna.array_response_vector(self.paths.DoA_theta, self.paths.DoA_phi)
         array_response = array_response_RX[:, None, :] * array_response_TX[None, :, :]
+        
         # Reshaping to 2D for matrix multiplication
-        N_tx, N_rx = self.tx_antenna.num_elements(), self.rx_antenna.num_elements()
         array_response = array_response.reshape((N_rx*N_tx, -1))
 
         # Channel Impulse Response
@@ -135,7 +135,7 @@ class OFDMChannel(Channel):
         path_const = a * np.exp(-1j * 2 * np.pi * tau * self.subcarrier_freq) / np.sqrt(self.total_subcarriers)
         
         channel = array_response @ path_const
-        channel = channel.reshape((N_tx, N_rx, -1))
+        channel = channel.reshape((N_rx, N_tx, -1))
 
         self.coeffs = channel
 
