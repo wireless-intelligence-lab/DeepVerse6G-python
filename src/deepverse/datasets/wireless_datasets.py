@@ -157,7 +157,7 @@ class CommunicationDataset:
             n_ue = len(raydata['paths'])
             for j in tqdm(range(n_ue), desc='Generating channels'):
                 # TODO: Fix selecting a single antenna - antennas need to be defined for each dynamic object & static object
-                paths = Paths(raydata['paths'][j], carrier_freq).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['rx_ant_objs'][0])
+                paths = Paths(raydata['paths'][j], carrier_freq, params['num_paths']).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['rx_ant_objs'][0])
                 channel = OFDMChannel(tx_antenna=params['tx_ant_objs'][i], 
                                       rx_antenna=params['rx_ant_objs'][0], 
                                       paths=paths, 
@@ -180,7 +180,7 @@ class CommunicationDataset:
             bs_channels = []
             n_bs = len(raydata['paths'])
             for j in tqdm(range(n_bs), desc='Generating channels'):
-                paths = Paths(raydata['paths'][j], carrier_freq).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['tx_ant_objs'][j])
+                paths = Paths(raydata['paths'][j], carrier_freq, params['num_paths']).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['tx_ant_objs'][j])
                 channel = OFDMChannel(tx_antenna=params['tx_ant_objs'][i], 
                                       rx_antenna=params['tx_ant_objs'][j], 
                                       paths=paths, 

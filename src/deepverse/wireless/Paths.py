@@ -3,7 +3,7 @@ import numpy as np
 from . import consts as c
 
 class Paths:
-    def __init__(self, path_dict, carrier_freq):
+    def __init__(self, path_dict, carrier_freq, max_num_path=None):
         """
         Initialize the Paths object.
 
@@ -28,21 +28,23 @@ class Paths:
         Doppler_acc : list or np.ndarray, optional
             List or array of Doppler accelerations (default is None).
         """
-        self.power = np.array(path_dict['power'])
-        self.phase = np.array(path_dict['phase'])
-        self.ToA = np.array(path_dict['ToA'])
+        if max_num_path is None:
+            max_num_path = len(np.array(path_dict['power']))
+        self.power = np.array(path_dict['power'])[:max_num_path]
+        self.phase = np.array(path_dict['phase'])[:max_num_path]
+        self.ToA = np.array(path_dict['ToA'])[:max_num_path]
         
-        self.DoD_theta = np.radians(np.array(path_dict['DoD_theta']))
-        self.DoD_phi = np.radians(np.array(path_dict['DoD_phi']))
-        self.DoA_theta = np.radians(np.array(path_dict['DoA_theta']))
-        self.DoA_phi = np.radians(np.array(path_dict['DoA_phi']))
+        self.DoD_theta = np.radians(np.array(path_dict['DoD_theta']))[:max_num_path]
+        self.DoD_phi = np.radians(np.array(path_dict['DoD_phi']))[:max_num_path]
+        self.DoA_theta = np.radians(np.array(path_dict['DoA_theta']))[:max_num_path]
+        self.DoA_phi = np.radians(np.array(path_dict['DoA_phi']))[:max_num_path]
         
         if 'Doppler_vel' in path_dict.keys() and path_dict['Doppler_vel'] is not None:
-            self.doppler_vel = np.array(path_dict['Doppler_vel'])
-            self.doppler_acc = np.array(path_dict['Doppler_acc'])
+            self.doppler_vel = np.array(path_dict['Doppler_vel'])[:max_num_path]
+            self.doppler_acc = np.array(path_dict['Doppler_acc'])[:max_num_path]
         else:  
-            self.doppler_vel = np.zeros_like(self.DoA_phi)
-            self.doppler_acc = np.zeros_like(self.DoA_phi)
+            self.doppler_vel = np.zeros_like(self.DoA_phi)[:max_num_path]
+            self.doppler_acc = np.zeros_like(self.DoA_phi)[:max_num_path]
             
         # Other parameters
         # Make sure they are not np.ndarray for not being filtered
