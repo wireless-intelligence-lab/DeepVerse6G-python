@@ -187,7 +187,9 @@ class RadarChannel(Channel):
         
         # N_rx x N_tx x N_chirps x N_time
         IF_signal = IF_signal.reshape((N_rx, N_tx, 
-                                       self.waveform.n_samples_per_chirp, self.waveform.n_chirps))
+                                       self.waveform.n_chirps,
+                                       self.waveform.n_samples_per_chirp))
+        IF_signal = np.swapaxes(IF_signal, -1, -2)
 
         self.coeffs = IF_signal
     

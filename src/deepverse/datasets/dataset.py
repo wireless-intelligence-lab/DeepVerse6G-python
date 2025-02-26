@@ -46,15 +46,18 @@ class Dataset:
         # TODO: Add an enumerator class, load by name and also update scenario manager to use the enumerator.
         if 'camera' in self.scenario.sensors:
             self.camera_dataset = CameraDataset(self.params, self.scenario.sensors['camera'])
+        
         if 'LiDAR' in self.scenario.sensors:
             self.lidar_dataset = LiDARDataset(self.params, self.scenario.sensors['LiDAR'])
         
-        # Mobility data is loaded regardless of whether it's explicitly listed in sensors
-        self.mobility_dataset = MobilityDataset(self.params, self.scenario.moving_objects) 
+        if self.params['position']:
+            self.mobility_dataset = MobilityDataset(self.params, self.scenario.moving_objects) 
 
-        # Assuming radar and communication datasets are always present (or modify this logic as needed)
-        self.radar_dataset = RadarDataset(self.param_manager.get_filtered_params('radar'))
-        self.comm_dataset = CommunicationDataset(self.param_manager.get_filtered_params('comm'))
+        if self.params['radar']['enable']:
+            self.radar_dataset = RadarDataset(self.param_manager.get_filtered_params('radar'))
+        
+        if self.params['comm']['enable']:
+            self.comm_dataset = CommunicationDataset(self.param_manager.get_filtered_params('comm'))
 
     def get_sample(self, modality, index=None, device_index=None, ue_idx=None, bs_idx=None, object_id=None):
         """

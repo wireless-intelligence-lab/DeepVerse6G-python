@@ -59,8 +59,11 @@ class FMCW(Waveform):
         self.T_pause = self.T_period - self.T_chirp
         
         self.T_frame = n_chirps * self.T_period
+
+        self.time_fast = 1./Fs * np.arange(n_samples_per_chirp)
+        self.time = self.time_fast[None, :] + np.arange(n_chirps)[:, None] * self.T_chirp
+        self.time = self.time.reshape((-1, ))
         
-        self.time = np.arange(0, self.T_frame, 1./Fs)
         self.bandwidth = self.chirp_slope * self.T_chirp
         
     def __str__(self):
@@ -83,23 +86,29 @@ class FMCW(Waveform):
             FMCW waveform samples.
         """     
         
-        t = self.time.reshape((1, -1)) # Sampling times
+        # t = self.time.reshape((1, -1)) # Sampling times
+        # t_fast = t[0, None, :self.n_samples_per_chirp]
+        # t_fast = np.tile(t_fast, (1, self.n_chirps))
+
+        t = self.time.reshape((1, -1))
+        t_fast = self.time_fast.reshape((1, -1))
+        t_fast = np.tile(t_fast, (1, self.n_chirps))
         
         # Adjusted time for path and chirp
         a, tau = paths.cir(doppler_shift=False)
+        doppler_vel = paths.doppler_vel
+        doppler_acc = paths.doppler_acc
         
         # Filter paths with delay larger than chirp duration
         path_filter = tau<self.T_chirp
-        tau = tau[path_filter]
-        a = a[path_filter]
+        a = a[path_filter].reshape((-1, 1))
+        tau = tau[path_filter].reshape((-1, 1))
+        doppler_vel = doppler_vel[path_filter].reshape((-1, 1))
+        doppler_acc = doppler_acc[path_filter].reshape((-1, 1))
         
-        a = a.reshape((-1, 1))
-        tau = tau.reshape((-1, 1))
-        not_first_chirp = (t%self.T_period)>tau
-        next_chirp = (t%self.T_period)>(tau-self.T_pause)
-        
-        doppler_vel = paths.doppler_vel.reshape((-1, 1))
-        doppler_acc = paths.doppler_acc.reshape((-1, 1))
+        not_first_chirp = (t_fast%self.T_period)>tau
+        next_chirp = (t_fast%self.T_period)<(tau-self.T_pause)
+
         
         velocity_term     = doppler_vel * t    / c.LIGHTSPEED 
         acceleration_term = doppler_acc * t**2 / c.LIGHTSPEED / 2. # This should be very small (may be removed)
@@ -107,14 +116,17 @@ class FMCW(Waveform):
         
         f_IF = self.chirp_slope * tau
         phi_IF = (self.f_0 - 0.5 * self.chirp_slope * tau) * tau # Second term may be removed
+        IF_signal1 = np.exp(1j * 2 * np.pi * (f_IF * t_fast + phi_IF))
  
         tau_minus_pri = tau - self.T_period
         f_IF_late = self.chirp_slope * tau_minus_pri
-        phi_IF_late = (self.f_0 - 0.5 * self.chirp_slope * tau_minus_pri) * tau_minus_pri # Second term may be removed
+        phi_IF_late = (self.f_0 - 0.5 * self.chirp_slope * tau_minus_pri) * tau_minus_pri # Second term may be removedIF_signal1
+        IF_signal2 = np.exp(1j * 2 * np.pi * (f_IF_late * t_fast + phi_IF_late))
 
         # IF signal: P x T (chirp time samples)
         # Conjugate to make it cir e^(-j phase)
-        IF_signal = np.conj(a) * np.exp(-1j * 2 * np.pi * ((f_IF * t + phi_IF)*not_first_chirp + (f_IF_late * t + phi_IF_late)*next_chirp))
+        IF_signal = np.conj(a) * (IF_signal1 * not_first_chirp + IF_signal2 * next_chirp)
+
         
         return IF_signal
     

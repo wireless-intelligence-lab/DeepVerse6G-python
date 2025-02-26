@@ -1,5 +1,6 @@
 import numpy as np
-
+from scipy.spatial.transform import Rotation as R
+from scipy.special import sindg, cosdg
 class Antenna:
     def __init__(self, shape, rotation, FoV, spacing, **kwargs):
         """
@@ -94,10 +95,10 @@ class Antenna:
         elevation_inclusion = (theta >= (np.pi/2 - FoV_elevation)) & (theta <= (np.pi/2 + FoV_elevation))
         path_inclusion = azimuth_inclusion & elevation_inclusion
         return path_inclusion
-
+    
     def apply_rotation(self, theta, phi):
         """
-        Rotate the given zenith and azimuth angles by specified rotation angles.
+        Rotate the given zenith (theta) and azimuth (phi) angles.
 
         Parameters:
         ----------
@@ -113,25 +114,30 @@ class Antenna:
         Phi2 : numpy.ndarray
             Rotated azimuth angles in radians.
         """
-        Gamma, Beta, Alpha = np.radians(self.rotation)
+        # Convert angles to degrees
+        theta_deg = np.degrees(theta)
+        phi_deg = np.degrees(phi)
+        Gamma, Beta, Alpha = self.rotation
 
-        cosTheta = np.cos(theta)
-        sinTheta = np.sin(theta)
-        cosPhiAlpha = np.cos(phi - Alpha)
-        sinPhiAlpha = np.sin(phi - Alpha)
-        cosBeta = np.cos(Beta)
-        sinBeta = np.sin(Beta)
-        cosGamma = np.cos(Gamma)
-        sinGamma = np.sin(Gamma)
+        cosTheta = cosdg(theta_deg)
+        sinTheta = sindg(theta_deg)
+        cosPhiAlpha = cosdg(phi_deg - Alpha)
+        sinPhiAlpha = sindg(phi_deg - Alpha)
+        cosBeta = cosdg(Beta)
+        sinBeta = sindg(Beta)
+        cosGamma = cosdg(Gamma)
+        sinGamma = sindg(Gamma)
 
-        Theta2 = np.arccos(cosBeta * cosGamma * cosTheta +
-                                     sinTheta * (sinBeta * cosGamma * cosPhiAlpha - sinGamma * sinPhiAlpha))
+        Theta2 = np.arccos(cosBeta * cosGamma * cosTheta + 
+                           sinTheta * (sinBeta * cosGamma * cosPhiAlpha - sinGamma * sinPhiAlpha))
 
         Phi2_real = cosBeta * sinTheta * cosPhiAlpha - sinBeta * cosTheta
         Phi2_imag = cosBeta * sinGamma * cosTheta + sinTheta * (sinBeta * sinGamma * cosPhiAlpha + cosGamma * sinPhiAlpha)
         Phi2 = np.angle(Phi2_real + 1j * Phi2_imag)
 
         return Theta2, Phi2
+
+
     
     def num_elements(self):
         return np.prod(self.shape)

@@ -71,7 +71,7 @@ class RadarDataset:
             bs_channels = []
             n_bs = len(raydata['paths'])
             for j in tqdm(range(n_bs), desc='Generating channels'):
-                paths = Paths(raydata['paths'][j], carrier_freq).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['rx_ant_objs'][j])
+                paths = Paths(raydata['paths'][j], carrier_freq, params['num_paths']).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['rx_ant_objs'][j])
                     
                 channel = RadarChannel(tx_antenna=params['tx_ant_objs'][i],
                                        rx_antenna=params['rx_ant_objs'][j],
