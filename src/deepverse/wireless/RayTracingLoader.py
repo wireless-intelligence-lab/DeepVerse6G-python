@@ -20,14 +20,14 @@ class RayTracingLoader:
         self.num_files_per_bs = (self.data_tables['rx']['tx'] == 1).sum() # Pick number of BSs from the BS file
         
     def load_data(self, tx_idx, rx_idx=None, user=True):
-        if rx_idx == None:
+        if rx_idx is None:
             rx_idx = np.arange(self.num_ue)
         ray_data, rx_locs, tx_loc = self._load_ray_data(bs_id=tx_idx, 
                                                         generation_idx=rx_idx, 
                                                         df=self.data_tables['rx' if user else 'tx'])
         
         path_list = []
-        for user in tqdm(range(len(ray_data)), desc='Reading ray-tracing'):
+        for user in tqdm(range(len(ray_data)), desc='Reading ray-tracing', leave=False):
             path_dict = raydata_matrix_to_dictionary(ray_data[user][0], num_max_paths=None, power_normalization_factor=30)
             path_list.append(path_dict)
             

@@ -2,7 +2,6 @@
 import os
 import numpy as np
 from tqdm import tqdm
-from ..wireless.utils import safe_print
 from ..wireless.process_params import create_antennas, find_users_from_rows
 from ..wireless.RayTracingLoader import RayTracingLoader
 
@@ -42,8 +41,7 @@ class RadarDataset:
 
     def _generate_data(self, scenes):
         dataset = []
-        for i, scene_idx in enumerate(scenes):
-            print('\nScene %i/%i' % (i+1, len(scenes)))
+        for i, scene_idx in enumerate(tqdm(scenes, desc="Processing Scenes", leave=False)):
             dataset.append(self._generate_scene_data(scene_idx=scene_idx))
             
         return dataset
@@ -65,12 +63,11 @@ class RadarDataset:
         dataset = []
         for i in range(num_active_bs):
             bs_indx = params[c.PARAMSET_ACTIVE_BS]
-            safe_print('\nBasestation %i' % bs_indx[i])
             
             raydata, _ = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=bs_indx-1, user=False)
             bs_channels = []
             n_bs = len(raydata['paths'])
-            for j in tqdm(range(n_bs), desc='Generating channels'):
+            for j in tqdm(range(n_bs), desc=f'Generating BS{bs_indx[i]} channels', leave=False):
                 paths = Paths(raydata['paths'][j], carrier_freq, params['num_paths']).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['rx_ant_objs'][j])
                     
                 channel = RadarChannel(tx_antenna=params['tx_ant_objs'][i],
@@ -87,6 +84,8 @@ class RadarDataset:
     
     def get_sample(self, tx_bs_idx, rx_bs_idx, sample_idx):
         return self.data[sample_idx][tx_bs_idx][rx_bs_idx]
+
+
 class CommunicationDataset:
     def __init__(self, params):
         self.params = params
@@ -122,8 +121,7 @@ class CommunicationDataset:
     
     def _generate_data(self, scenes):
         dataset = []
-        for i, scene_idx in enumerate(scenes):
-            print('\nScene %i/%i' % (i+1, len(scenes)))
+        for i, scene_idx in enumerate(tqdm(scenes, desc="Processing Scenes", leave=False)):
             dataset.append(self._generate_scene_data(scene_idx=scene_idx))
             
         return dataset
@@ -145,17 +143,15 @@ class CommunicationDataset:
             bs_data = {}
         
             bs_indx = params[c.PARAMSET_ACTIVE_BS]
-            safe_print('\nBasestation %i' % bs_indx[i])
             
             #%%
-            safe_print('\nUE-BS Channels')
             # TODO: When adding the feature for static users, fix None for rx_idx
             # rx_idx=None to generate all users
             raydata, bs_data['bs_loc'] = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=None, user=True)
 
             ue_channels = []
             n_ue = len(raydata['paths'])
-            for j in tqdm(range(n_ue), desc='Generating channels'):
+            for j in tqdm(range(n_ue), desc=f'Generating BS{bs_indx[i]}-UE channels', leave=False):
                 # TODO: Fix selecting a single antenna - antennas need to be defined for each dynamic object & static object
                 paths = Paths(raydata['paths'][j], carrier_freq, params['num_paths']).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['rx_ant_objs'][0])
                 channel = OFDMChannel(tx_antenna=params['tx_ant_objs'][i], 
@@ -175,11 +171,10 @@ class CommunicationDataset:
             bs_data['ue_loc'] = np.asarray(raydata['location']).reshape((-1, 3))
             
             #%%
-            safe_print('\nBS-BS Channels')
             raydata, _ = rt_loader.load_data(tx_idx=bs_indx[i]-1, rx_idx=bs_indx-1, user=False)
             bs_channels = []
             n_bs = len(raydata['paths'])
-            for j in tqdm(range(n_bs), desc='Generating channels'):
+            for j in tqdm(range(n_bs), desc=f'Generating BS{bs_indx[i]}-BS channels', leave=False):
                 paths = Paths(raydata['paths'][j], carrier_freq, params['num_paths']).apply_antenna_parameters(TX_antenna=params['tx_ant_objs'][i], RX_antenna=params['tx_ant_objs'][j])
                 channel = OFDMChannel(tx_antenna=params['tx_ant_objs'][i], 
                                       rx_antenna=params['tx_ant_objs'][j], 

@@ -12,6 +12,9 @@ from .wireless_datasets import RadarDataset
 from .wireless_datasets import CommunicationDataset
 
 from copy import deepcopy
+from tqdm import tqdm
+import time
+
 
 class Dataset:
     """
@@ -45,19 +48,39 @@ class Dataset:
         # Initialize modality-specific datasets based on the scenario configuration
         # TODO: Add an enumerator class, load by name and also update scenario manager to use the enumerator.
         if 'camera' in self.scenario.sensors:
+            start_time = time.perf_counter()
+            tqdm.write("Generating camera dataset: ⏳ In progress")
             self.camera_dataset = CameraDataset(self.params, self.scenario.sensors['camera'])
+            end_time = time.perf_counter()
+            tqdm.write(f"\033[F\033[KGenerating camera dataset: ✅ Completed ({(end_time-start_time):.2f}s)")
         
         if 'LiDAR' in self.scenario.sensors:
+            tqdm.write("Generating LiDAR dataset: ⏳ In progress")
+            start_time = time.perf_counter()
             self.lidar_dataset = LiDARDataset(self.params, self.scenario.sensors['LiDAR'])
+            end_time = time.perf_counter()
+            tqdm.write(f"\033[F\033[KGenerating LiDAR dataset: ✅ Completed ({(end_time-start_time):.2f}s)")
         
         if self.params['position']:
-            self.mobility_dataset = MobilityDataset(self.params, self.scenario.moving_objects) 
-
-        if self.params['radar']['enable']:
-            self.radar_dataset = RadarDataset(self.param_manager.get_filtered_params('radar'))
+            tqdm.write("Generating mobility dataset: ⏳ In progress")
+            start_time = time.perf_counter()
+            self.mobility_dataset = MobilityDataset(self.params, self.scenario.moving_objects)
+            end_time = time.perf_counter()
+            tqdm.write(f"\033[F\033[KGenerating mobility dataset: ✅ Completed ({(end_time-start_time):.2f}s)")
         
         if self.params['comm']['enable']:
+            tqdm.write("Generating comm dataset: ⏳ In progress")
+            start_time = time.perf_counter()
             self.comm_dataset = CommunicationDataset(self.param_manager.get_filtered_params('comm'))
+            end_time = time.perf_counter()
+            tqdm.write(f"\033[F\033[KGenerating comm dataset: ✅ Completed ({(end_time-start_time):.2f}s)")
+
+        if self.params['radar']['enable']:
+            tqdm.write("Generating radar dataset: ⏳ In progress")
+            start_time = time.perf_counter()
+            self.radar_dataset = RadarDataset(self.param_manager.get_filtered_params('radar'))
+            end_time = time.perf_counter()
+            tqdm.write(f"\033[F\033[KGenerating radar dataset: ✅ Completed ({(end_time-start_time):.2f}s)")
 
     def get_sample(self, modality, index=None, device_index=None, ue_idx=None, bs_idx=None, object_id=None):
         """
