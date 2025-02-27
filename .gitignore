@@ -3,3 +3,5 @@ scenarios/*
 docs/build.zip
 docs/build/*
 examples/*
+dist/*
+src/DeepVerse.egg-info/*
