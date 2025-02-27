@@ -47,14 +47,14 @@ class Dataset:
 
         # Initialize modality-specific datasets based on the scenario configuration
         # TODO: Add an enumerator class, load by name and also update scenario manager to use the enumerator.
-        if 'camera' in self.scenario.sensors:
+        if 'camera' in self.scenario.sensors and self.params['camera']:
             start_time = time.perf_counter()
             tqdm.write("Generating camera dataset: ⏳ In progress")
             self.camera_dataset = CameraDataset(self.params, self.scenario.sensors['camera'])
             end_time = time.perf_counter()
             tqdm.write(f"\033[F\033[KGenerating camera dataset: ✅ Completed ({(end_time-start_time):.2f}s)")
         
-        if 'LiDAR' in self.scenario.sensors:
+        if 'LiDAR' in self.scenario.sensors and self.params['lidar']:
             tqdm.write("Generating LiDAR dataset: ⏳ In progress")
             start_time = time.perf_counter()
             self.lidar_dataset = LiDARDataset(self.params, self.scenario.sensors['LiDAR'])

@@ -100,14 +100,14 @@ class FMCW(Waveform):
         doppler_acc = paths.doppler_acc
         
         # Filter paths with delay larger than chirp duration
-        path_filter = tau<self.T_chirp
+        path_filter = tau < self.T_chirp
         a = a[path_filter].reshape((-1, 1))
         tau = tau[path_filter].reshape((-1, 1))
         doppler_vel = doppler_vel[path_filter].reshape((-1, 1))
         doppler_acc = doppler_acc[path_filter].reshape((-1, 1))
         
-        not_first_chirp = (t_fast%self.T_period)>tau
-        next_chirp = (t_fast%self.T_period)<(tau-self.T_pause)
+        not_first_chirp = t_fast > tau
+        next_chirp = t_fast < (tau-self.T_pause)
 
         
         velocity_term     = doppler_vel * t    / c.LIGHTSPEED 

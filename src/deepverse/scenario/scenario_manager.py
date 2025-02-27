@@ -43,7 +43,7 @@ class ScenarioManager:
         Returns:
             dict: The scenario configuration as a dictionary.
         """
-        config_path = os.path.join(self.scenario_path, 'scenario.yaml')
+        config_path = os.path.join(self.scenario_path, 'param', 'scenario.yaml')
         with open(config_path, 'r') as file:
             config = yaml.safe_load(file)
         return config
