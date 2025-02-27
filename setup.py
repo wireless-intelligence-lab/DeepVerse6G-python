@@ -16,7 +16,9 @@ setuptools.setup(
                           'scipy',
                           'tqdm',
                           'matplotlib',
-                          'pyyaml'],
+                          'pyyaml',
+                          'natsort',
+                          'pandas'],
         
         keywords=['mmWave', 'MIMO', 'digital twin', 'wireless', 'python', 'Beta'],
         classifiers= [
