@@ -27,7 +27,7 @@ class LidarVisualizer(BaseVisualizer):
             backend (str): The name of the backend to use for visualization. Default is 'open3d'.
         """
         super().__init__()
-        self.set_backend(backend)  # Set the default backend
+        # self.set_backend(backend)  # Set the default backend
 
     def set_backend(self, backend):
         """

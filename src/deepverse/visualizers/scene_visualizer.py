@@ -21,7 +21,7 @@ class SceneVisualizer(BaseVisualizer):
             backend (str): The default backend to use ('matplotlib' or 'pyvista').
         """
         super().__init__()
-        self.set_backend(backend)  # Set the default backend
+        # self.set_backend(backend)  # Set the default backend
 
     def set_backend(self, backend):
         """
