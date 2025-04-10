@@ -16,7 +16,7 @@ class LidarVisualizer(BaseVisualizer):
     """
     
     # Supported backends for LiDAR visualization
-    supported_backends = ['open3d']
+    supported_backends = ['open3d', 'matplotlib']
     # TODO: Alternative visualization backends: 'mayavi', 'pcl', 'matplotlib', 'vtk', 'plotly' to be fixed
 
     def __init__(self, backend='open3d'):
@@ -107,12 +107,49 @@ class LidarVisualizer(BaseVisualizer):
             pcd_path (str): The path to the point cloud file.
         """
         import numpy as np
-        points = np.genfromtxt(pcd_path, delimiter=' ', skip_header=11, usecols=(0, 1, 2))
-        x, y, z = points[:, 0], points[:, 1], points[:, 2]
+
+        def read_binary_pcd(file_path):
+            """Reads a binary PCD file and extracts the point cloud data."""
+            with open(file_path, 'rb') as f:
+                # Read header
+                header = []
+                while True:
+                    line = f.readline().strip().decode("ascii", errors="ignore")
+                    if line.startswith("DATA"):
+                        break
+                    header.append(line)
+                
+                # Extract metadata from the header
+                metadata = {line.split()[0]: line.split()[1:] for line in header}
+                
+                # Extract number of points
+                num_points = int(metadata["POINTS"][0])
+
+                # Define data format
+                dtype = np.dtype([
+                    ("x", np.float32), 
+                    ("y", np.float32), 
+                    ("z", np.float32), 
+                    ("rgb_raw", np.uint32)  # RGB is stored as packed uint32
+                ])
+
+                # Read binary data
+                data = np.fromfile(f, dtype=dtype, count=num_points)
+                rgb_raw = data["rgb_raw"]
+                # Extract RGB values and convert them to 0-1 range for matplotlib
+                r = ((rgb_raw >> 16) & 0xFF) / 255.0  # Red channel
+                g = ((rgb_raw >> 8) & 0xFF) / 255.0   # Green channel
+                b = (rgb_raw & 0xFF) / 255.0          # Blue channel
+                rgb = np.stack((r, g, b), axis=1)
+                
+            return data["x"], data["y"], data["z"], rgb
+        
+        x, y, z, rgb = read_binary_pcd(pcd_path)
 
         fig = self.backend_lib.figure()
         ax = fig.add_subplot(111, projection='3d')  # Use projection='3d' to create a 3D plot
-        ax.scatter(x, y, z, c='r', marker='o')
+        ax.scatter(x, y, z, c=rgb, marker='o')
+        ax.axis('equal')
         self.backend_lib.show()
 
     def _visualize_with_vtk(self, pcd_path):
