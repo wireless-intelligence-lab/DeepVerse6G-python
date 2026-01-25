@@ -191,7 +191,7 @@ class CommunicationDataset:
                 bs_channels.append(channel)
             bs_data['bs'] = bs_channels
             
-        dataset.append(bs_data)
+            dataset.append(bs_data)
         return dataset
     
     def get_ue_channel(self, ue_idx, bs_idx, time_idx):
