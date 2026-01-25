@@ -1,6 +1,6 @@
 import setuptools
 
-VERSION = '0.0.4' 
+VERSION = '0.0.4a' 
 DESCRIPTION = 'DeepVerse 6G'
 LONG_DESCRIPTION = 'DeepVerse 6G dataset generator library'
 
